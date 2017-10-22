@@ -9,12 +9,10 @@ namespace eShop.Catalog.Infrastructure
 {
     public class CatalogRepository : ICatalogRepository
     {
-        private readonly string _connectionString;
         private readonly ILogger _logger;
 
-        public CatalogRepository(string connectionString, ILogger logger)
+        public CatalogRepository(ILogger logger)
         {
-            _connectionString = connectionString;
             _logger = logger;
         }
 
