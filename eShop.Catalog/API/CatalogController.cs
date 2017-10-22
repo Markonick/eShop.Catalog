@@ -21,28 +21,16 @@ namespace eShop.Catalog.API
 
         // GET api/v1/[controller]/items[?pageSize=3&pageIndex=10]
         [HttpGet]
-        [Route("[action")]
-        public IEnumerable<string> Get()
+        [Route("[action]")]
+        public async Task<IActionResult> Items([FromQuery]int pageSize = 10, [FromQuery]int pageIndex = 0)
         {
-            try
-            {
-                //Service
-                IEnumerable<Product> products = await _repository.GetCatalogAsync();
+             var result = await _repository.GetItemsAsync(pageIndex, pageSize);
+             var model = new PaginatedItemsViewModel<CatalogItem>(pageIndex, pageSize, result.TotalItems, result.ItemsOnPage);
 
-                if (products.ToList().Count != 0) return Ok(model);
-
-                var errorMessage = new ErrorMessage { Message = "NotFound" };
-                return Negotiate.WithModel(errorMessage).WithStatusCode(HttpStatusCode.NotFound);
-            }
-            catch (Exception ex)
-            {
-                _logger.Debug(ex.Message);
-                var errorMessage = new ErrorMessage { Message = "InternalServerError" };
-                return Negotiate.WithModel(errorMessage).WithStatusCode(HttpStatusCode.InternalServerError);
-            }
+             return Ok(model);
         }
 
-        // GET api/products/5
+        // GET api/items/5
         [HttpGet]
         [Route("items/{id:int}")]
         public string Get(int id)
@@ -50,19 +38,19 @@ namespace eShop.Catalog.API
             return "value";
         }
 
-        // POST api/products
+        // POST api/items
         [HttpPost]
         public void Post([FromBody]string value)
         {
         }
 
-        // DELETE api/products/5
+        // DELETE api/items/5
         [HttpDelete("{id}")]
         public void Delete(int id)
         {
         }
 
-        // PUT api/products/5
+        // PUT api/items/5
         [HttpPut("{id}")]
         public void Put(int id, [FromBody]string value)
         {

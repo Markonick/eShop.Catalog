@@ -6,10 +6,10 @@ namespace eShop.Catalog.Domain
 {
     public interface ICatalogRepository
     {
-        Task<bool> AddProductAsync(CatalogItem product);
-        Task<bool> DeleteProductAsync(int id);
-        Task<bool> UpdateProductAsync(CatalogItem product);
-        Task<CatalogItem> GetProductAsync(int id);
-        Task<List<CatalogItem>> GetCatalogAsync(string count, string offset, DateTime? fromDate, DateTime? toDate);
+        Task<CatalogResponse> GetItemsAsync(int pageIndex, int pageSize);
+        Task<CatalogItem> GetItemAsync(int id);
+        Task<bool> AddItemAsync(CatalogItem product);
+        Task<bool> DeleteItemAsync(int id);
+        Task<bool> UpdateItemAsync(CatalogItem product);
     }
 }

@@ -9,6 +9,7 @@ namespace eShop.Catalog.Infrastructure
         public DbSet<CatalogType> CatalogTypes { get; set; }
         public DbSet<CatalogBrand> CatalogBrands { get; set; }
 
+        public CatalogContext() { }
         public CatalogContext(DbContextOptions<CatalogContext> options) : base(options) { }
         
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)

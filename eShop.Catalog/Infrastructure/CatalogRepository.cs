@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using eShop.Catalog.Domain;
@@ -8,135 +7,136 @@ using Serilog;
 
 namespace eShop.Catalog.Infrastructure
 {
-    public class CatalogRepository
+    public class CatalogRepository : ICatalogRepository
     {
-        public class CatalogRepository : ICatalogRepository
+        private readonly string _connectionString;
+        private readonly ILogger _logger;
+
+        public CatalogRepository(string connectionString, ILogger logger)
         {
-            private readonly string _connectionString;
-            private readonly ILogger _logger;
+            _connectionString = connectionString;
+            _logger = logger;
+        }
 
-            public CatalogRepository(string connectionString, ILogger logger)
+        public async Task<CatalogResponse> GetItemsAsync(int pageIndex, int pageSize)
+        {
+            using (var dbContext = new CatalogContext())
             {
-                _connectionString = connectionString;
-                _logger = logger;
-            }
-
-            public async Task<List<CatalogItem>> GetCatalogAsync(string count, string offset, DateTime? fromDate, DateTime? toDate)
-            {
-                using (var dbContext = new CatalogContext())
+                try
                 {
-                    try
-                    {
-                        return await dbContext.CatalogItems.ToListAsync();
-                    }
-                    catch (Exception ex)
-                    {
-                        _logger.Debug(ex.Message);
-                        throw;
-                    }
+                    var totalItems = await dbContext.CatalogItems
+                        .LongCountAsync();
+
+                    var itemsOnPage = await dbContext.CatalogItems
+                        .OrderBy(c => c.Name)
+                        .Skip(pageSize * pageIndex)
+                        .Take(pageSize)
+                        .ToListAsync();
+                    
+                    return new CatalogResponse{ ItemsOnPage = itemsOnPage, TotalItems = totalItems };
+                }
+                catch (Exception ex)
+                {
+                    _logger.Debug(ex.Message);
+                    throw;
                 }
             }
+        }
 
-            public async Task<CatalogItem> GetProductAsync(int id)
+        public async Task<CatalogItem> GetItemAsync(int id)
+        {
+            using (var dbContext = new CatalogContext())
             {
-                using (var dbContext = new CatalogContext())
+                try
                 {
-                    try
-                    {
-                        return await dbContext.CatalogItems.FindAsync(id);
-                    }
-                    catch (Exception ex)
-                    {
-                        _logger.Debug(ex.Message);
-                        throw;
-                    }
+                    return await dbContext.CatalogItems.FindAsync(id);
+                }
+                catch (Exception ex)
+                {
+                    _logger.Debug(ex.Message);
+                    throw;
                 }
             }
+        }
 
-            public async Task<bool> AddProductAsync(CatalogItem product)
+        public async Task<bool> AddItemAsync(CatalogItem product)
+        {
+            using (var dbContext = new CatalogContext())
+            using (var dbContextTransaction = await dbContext.Database.BeginTransactionAsync())
             {
-                using (var dbContext = new CatalogContext())
-                using (var dbContextTransaction = await dbContext.Database.BeginTransactionAsync())
+                try
                 {
-                    try
-                    {
-                        const bool result = true;
+                    const bool result = true;
 
-                        await dbContext.CatalogItems.AddAsync(product);
+                    await dbContext.CatalogItems.AddAsync(product);
 
-                        await dbContext.SaveChangesAsync();
+                    await dbContext.SaveChangesAsync();
 
-                        dbContextTransaction.Commit();
+                    dbContextTransaction.Commit();
 
-                        return result;
-                    }
-                    catch (Exception ex)
-                    {
-                        _logger.Debug(ex.Message);
-                        dbContextTransaction.Rollback();
-                        throw;
-                    }
+                    return result;
+                }
+                catch (Exception ex)
+                {
+                    _logger.Debug(ex.Message);
+                    dbContextTransaction.Rollback();
+                    throw;
                 }
             }
+        }
 
-            public async Task<bool> DeleteProductAsync(int id)
+        public async Task<bool> DeleteItemAsync(int id)
+        {
+            using (var dbContext = new CatalogContext())
+            using (var dbContextTransaction = await dbContext.Database.BeginTransactionAsync())
             {
-                using (var dbContext = new CatalogContext())
-                using (var dbContextTransaction = await dbContext.Database.BeginTransactionAsync())
+                try
                 {
-                    try
-                    {
-                        const bool result = true;
+                    const bool result = true;
 
-                        var deleteProduct = await dbContext.CatalogItems.FindAsync(id);
-                        dbContext.CatalogItems.Remove(deleteProduct);
+                    var deleteProduct = await dbContext.CatalogItems.FindAsync(id);
+                    dbContext.CatalogItems.Remove(deleteProduct);
 
-                        await dbContext.SaveChangesAsync();
+                    await dbContext.SaveChangesAsync();
 
-                        dbContextTransaction.Commit();
+                    dbContextTransaction.Commit();
 
-                        return result;
-                    }
-                    catch (Exception ex)
-                    {
-                        _logger.Debug(ex.Message);
-                        dbContextTransaction.Rollback();
-                        throw;
-                    }
+                    return result;
+                }
+                catch (Exception ex)
+                {
+                    _logger.Debug(ex.Message);
+                    dbContextTransaction.Rollback();
+                    throw;
                 }
             }
+        }
 
-            public async Task<bool> UpdateProductAsync(CatalogItem product)
+        public async Task<bool> UpdateItemAsync(CatalogItem product)
+        {
+            using (var dbContext = new CatalogContext())
+            using (var dbContextTransaction = await dbContext.Database.BeginTransactionAsync())
             {
-                using (var dbContext = new CatalogContext())
-                using (var dbContextTransaction = await dbContext.Database.BeginTransactionAsync())
+                try
                 {
-                    try
-                    {
-                        const bool result = true;
+                    const bool result = true;
 
-                        var updateProduct = await dbContext.CatalogItems.FindAsync(product.Id);
+                    var updateProduct = await dbContext.CatalogItems.FindAsync(product.Id);
+                    
 
-                        updateProduct.DetailId = product.DetailId;
-                        updateProduct.Category = product.Category;
-                        updateProduct.CreatedDate = product.CreatedDate;
-                        updateProduct.ModifiedDate = product.ModifiedDate;
-                        updateProduct.Price = product.Price;
-                        updateProduct.Summary = product.Summary;
+                    await dbContext.SaveChangesAsync();
 
-                        await dbContext.SaveChangesAsync();
+                    dbContextTransaction.Commit();
 
-                        dbContextTransaction.Commit();
-
-                        return result;
-                    }
-                    catch (Exception ex)
-                    {
-                        _logger.Debug(ex.Message);
-                        dbContextTransaction.Rollback();
-                        throw;
-                    }
+                    return result;
+                }
+                catch (Exception ex)
+                {
+                    _logger.Debug(ex.Message);
+                    dbContextTransaction.Rollback();
+                    throw;
                 }
             }
         }
     }
+}
