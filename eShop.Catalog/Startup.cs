@@ -58,8 +58,15 @@ namespace eShop.Catalog
                         .AllowAnyHeader()
                         .AllowCredentials());
             });
+
             var logger = ConfigureLogger();
             services.AddTransient<ICatalogRepository, CatalogRepository>(x=>new CatalogRepository(logger));
+
+            var policy = Configuration.GetSection("Policy");
+            var retries = policy.GetValue<int>("Retries");
+            var sleepDurationInSeconds = policy.GetValue<int>("SleepDurationInSeconds");
+            services.AddSingleton<ICatalogContextSeed, CatalogContextSeed>(x => new CatalogContextSeed(retries, sleepDurationInSeconds, logger));
+
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -70,7 +77,15 @@ namespace eShop.Catalog
                 app.UseDeveloperExceptionPage();
             }
 
-            app.UseMvc();
+            app.UseCors("CorsPolicy");
+
+            app.UseMvcWithDefaultRoute();
+
+            app.UseSwagger()
+                .UseSwaggerUI(c =>
+                {
+                    c.SwaggerEndpoint("/swagger/v1/swagger.json", "eShop API V1");
+                });
         }
 
         private static ILogger ConfigureLogger()
