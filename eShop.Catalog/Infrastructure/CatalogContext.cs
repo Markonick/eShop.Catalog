@@ -13,7 +13,7 @@ namespace eShop.Catalog.Infrastructure
         public CatalogContext(DbContextOptions<CatalogContext> options) : base(options) { }
         
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
-            => optionsBuilder.UseSqlServer("Data Source=localhost\\SQLEXPRESS;Database=LondonMovingSouthDb;Integrated Security=SSPI;");
+            => optionsBuilder.UseSqlServer(@"Data Source=.\sqlexpress;Initial Catalog=LondonMovingSouthDb;Integrated Security=True");
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {

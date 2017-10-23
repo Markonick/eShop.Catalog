@@ -60,6 +60,7 @@ namespace eShop.Catalog
             });
 
             var logger = ConfigureLogger();
+            services.AddSingleton(logger);
             services.AddTransient<ICatalogRepository, CatalogRepository>(x=>new CatalogRepository(logger));
 
             var policy = Configuration.GetSection("Policy");
