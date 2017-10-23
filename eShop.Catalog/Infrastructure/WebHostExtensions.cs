@@ -8,7 +8,7 @@ namespace eShop.Catalog.Infrastructure
 {
     public static class WebHostExtensions
     {
-        public static IWebHost MigrateDbContext<TContext>(this IWebHost host, ILogger logger, Action<TContext, IServiceProvider> seeder) where TContext : DbContext
+        public static IWebHost MigrateDbContext<TContext>(this IWebHost host, Action<TContext, IServiceProvider> seeder) where TContext : DbContext
         {
             using (var scope = host.Services.CreateScope())
             {
@@ -18,14 +18,14 @@ namespace eShop.Catalog.Infrastructure
 
                 try
                 {
-                    logger.Information($"Migrating database associated with context {typeof(TContext).Name}");
+                    //logger.Information($"Migrating database associated with context {typeof(TContext).Name}");
                     context.Database.Migrate();
 
                     seeder(context, services);
                 }
                 catch (Exception ex)
                 {
-                    logger.Error(ex, $"An error occured while migrating the database used on context {typeof(TContext).Name}");
+                    //logger.Error(ex, $"An error occured while migrating the database used on context {typeof(TContext).Name}");
                 }
             }
 

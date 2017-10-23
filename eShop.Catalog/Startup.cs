@@ -22,7 +22,7 @@ namespace eShop.Catalog
         public IConfiguration Configuration { get; }
 
         // This method gets called by the runtime. Use this method to add services to the container.
-        public void ConfigureServices(IServiceCollection services)
+        public IServiceProvider ConfigureServices(IServiceCollection services)
         {
             services.AddMvc();
 
@@ -61,13 +61,14 @@ namespace eShop.Catalog
 
             var logger = ConfigureLogger();
             services.AddSingleton(logger);
-            services.AddTransient<ICatalogRepository, CatalogRepository>(x=>new CatalogRepository(logger));
+            services.AddScoped<ICatalogRepository, CatalogRepository>(x => new CatalogRepository(logger));
 
             var policy = Configuration.GetSection("Policy");
             var retries = policy.GetValue<int>("Retries");
             var sleepDurationInSeconds = policy.GetValue<int>("SleepDurationInSeconds");
             services.AddSingleton<ICatalogContextSeed, CatalogContextSeed>(x => new CatalogContextSeed(retries, sleepDurationInSeconds, logger));
-
+            
+            return services.BuildServiceProvider();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
