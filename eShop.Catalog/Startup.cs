@@ -9,6 +9,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Serilog;
 using Serilog.Events;
+using ILogger = Serilog.ILogger;
 
 namespace eShop.Catalog
 {

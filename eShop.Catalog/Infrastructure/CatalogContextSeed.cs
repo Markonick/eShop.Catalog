@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Data.SqlClient;
+using System.Linq;
 using System.Threading.Tasks;
 using eShop.Catalog.Domain;
 using Microsoft.AspNetCore.Hosting;
@@ -35,7 +36,10 @@ namespace eShop.Catalog.Infrastructure
 
             await retryPolicy.ExecuteAsync(async () =>
             {
-                // Perform an operation here
+                if (!context.CatalogBrands.Any())
+                {
+                    await context.CatalogBrands.AddRangeAsync();
+                }
             });
         }
     }

@@ -5,8 +5,6 @@ using Microsoft.AspNetCore;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Options;
-using Serilog;
 
 namespace eShop.Catalog
 {
@@ -32,7 +30,6 @@ namespace eShop.Catalog
                 {
                     config.AddEnvironmentVariables();
                 })
-                .UseSerilog()
                 .Build();
     }
 }

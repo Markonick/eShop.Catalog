@@ -1,8 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.EntityFrameworkCore.ChangeTracking.Internal;
 
 namespace eShop.Catalog.Domain
 {
@@ -18,9 +14,10 @@ namespace eShop.Catalog.Domain
         public CatalogType CatalogType { get; set; }
         public int CatalogBrandId { get; set; }
         public CatalogBrand CatalogBrand { get; set; }
+        public int AvailableStock { get; set; }
+
         public DateTime DateTimeAdded { get; set; }
         public DateTime DateTimeModified { get; set; }
-        public int AvailableStock { get; set; }
         public int RestockThreshold { get; set; }
         public bool OnReorder { get; set; }
         public int RemoveStock(int quantity)
