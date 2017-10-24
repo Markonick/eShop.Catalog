@@ -11,7 +11,7 @@
     "IIS Express": {
       "commandName": "IISExpress",
       "launchBrowser": true,
-      "launchUrl": "api/v1/catalog/items",
+      "launchUrl": "api/v1/catalog",
       "environmentVariables": {
         "ASPNETCORE_ENVIRONMENT": "Development"
       }
@@ -19,7 +19,7 @@
     "eShop.Catalog": {
       "commandName": "Project",
       "launchBrowser": true,
-      "launchUrl": "api/v1/catalog/items",
+      "launchUrl": "api/v1/catalog",
       "environmentVariables": {
         "ASPNETCORE_ENVIRONMENT": "Development"
       },

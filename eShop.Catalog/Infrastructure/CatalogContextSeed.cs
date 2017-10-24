@@ -1,8 +1,10 @@
 ﻿using System;
 using System.Data.SqlClient;
+using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 using eShop.Catalog.Domain;
+using eShop.Catalog.Helpers;
 using Microsoft.AspNetCore.Hosting;
 using Polly;
 using Serilog;
@@ -36,9 +38,28 @@ namespace eShop.Catalog.Infrastructure
 
             await retryPolicy.ExecuteAsync(async () =>
             {
+                var contentRootPath = env.ContentRootPath;
+
                 if (!context.CatalogBrands.Any())
                 {
-                    await context.CatalogBrands.AddRangeAsync();
+                    var pathToCsv = Path.Combine(contentRootPath, "SeedCSVs", "CatalogBrands.csv");
+                    var reader = new FileReader<CatalogBrand>(pathToCsv);
+                    await context.CatalogBrands.AddRangeAsync(await reader.GetDataAsync());
+                    await context.SaveChangesAsync();
+                }
+                if (!context.CatalogTypes.Any())
+                {
+                    var pathToCsv = Path.Combine(contentRootPath, "SeedCSVs", "CatalogTypes.csv");
+                    var reader = new FileReader<CatalogType>(pathToCsv);
+                    await context.CatalogTypes.AddRangeAsync(await reader.GetDataAsync());
+                    await context.SaveChangesAsync();
+                }
+                if (!context.CatalogItems.Any())
+                {
+                    var pathToCsv = Path.Combine(contentRootPath, "SeedCSVs", "CatalogItems.csv");
+                    var reader = new FileReader<CatalogItem>(pathToCsv);
+                    await context.CatalogItems.AddRangeAsync(await reader.GetDataAsync());
+                    await context.SaveChangesAsync();
                 }
             });
         }
