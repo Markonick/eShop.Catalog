@@ -10,19 +10,17 @@ using Serilog;
 
 namespace eShop.Catalog.Infrastructure
 {
-    public class CatalogContextSeed<T> : ICatalogContextSeed where T : class
+    public class CatalogContextSeed : ICatalogContextSeed
     {
         private readonly int _retries;
         private readonly int _sleepDurationInSeconds;
         private readonly ILogger _logger;
-        private readonly ICsvReader<T> _reader;
 
-        public CatalogContextSeed(int retries, int sleepDurationInSeconds, ILogger logger, ICsvReader<T> reader)
+        public CatalogContextSeed(int retries, int sleepDurationInSeconds, ILogger logger)
         {
             _retries = retries;
             _sleepDurationInSeconds = sleepDurationInSeconds;
             _logger = logger;
-            _reader = reader;
         }
 
         public async Task SeedAsync(CatalogContext context, IHostingEnvironment env)
@@ -41,7 +39,7 @@ namespace eShop.Catalog.Infrastructure
             {
                 if (!context.CatalogBrands.Any())
                 {
-                    await context.CatalogBrands.AddRangeAsync(GetSeedDataFromFile<CatalogBrand>());
+                    await context.CatalogBrands.AddRangeAsync();
                 }
 
                 if (!context.CatalogTypes.Any())

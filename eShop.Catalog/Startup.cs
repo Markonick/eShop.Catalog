@@ -63,7 +63,7 @@ namespace eShop.Catalog
             var logger = ConfigureLogger();
             services.AddSingleton(logger);
             services.AddScoped<ICatalogRepository, CatalogRepository>(x => new CatalogRepository(logger));
-
+            
             var policy = Configuration.GetSection("Policy");
             var retries = policy.GetValue<int>("Retries");
             var sleepDurationInSeconds = policy.GetValue<int>("SleepDurationInSeconds");
