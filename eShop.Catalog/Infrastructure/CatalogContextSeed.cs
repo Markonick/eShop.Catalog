@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Data.SqlClient;
 using System.IO;
 using System.Linq;
@@ -61,7 +62,22 @@ namespace eShop.Catalog.Infrastructure
                     await context.CatalogItems.AddRangeAsync(await reader.GetDataAsync());
                     await context.SaveChangesAsync();
                 }
+
+                if (!context.CatalogTypes.Any())
+                {
+                    await context.CatalogTypes.AddRangeAsync();
+                }
+
+                if (!context.CatalogItems.Any())
+                {
+                    await context.CatalogItems.AddRangeAsync();
+                }
             });
+        }
+
+        private static IEnumerable<T> GetSeedDataFromFile<T>(string filePath)
+        {
+            throw new NotImplementedException();
         }
     }
 }
