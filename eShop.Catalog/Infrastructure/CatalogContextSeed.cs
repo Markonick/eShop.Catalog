@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Data.SqlClient;
 using System.Linq;
 using System.Threading.Tasks;
@@ -9,17 +10,19 @@ using Serilog;
 
 namespace eShop.Catalog.Infrastructure
 {
-    public class CatalogContextSeed : ICatalogContextSeed
+    public class CatalogContextSeed<T> : ICatalogContextSeed where T : class
     {
         private readonly int _retries;
         private readonly int _sleepDurationInSeconds;
         private readonly ILogger _logger;
+        private readonly ICsvReader<T> _reader;
 
-        public CatalogContextSeed(int retries, int sleepDurationInSeconds, ILogger logger)
+        public CatalogContextSeed(int retries, int sleepDurationInSeconds, ILogger logger, ICsvReader<T> reader)
         {
             _retries = retries;
             _sleepDurationInSeconds = sleepDurationInSeconds;
             _logger = logger;
+            _reader = reader;
         }
 
         public async Task SeedAsync(CatalogContext context, IHostingEnvironment env)
@@ -38,9 +41,24 @@ namespace eShop.Catalog.Infrastructure
             {
                 if (!context.CatalogBrands.Any())
                 {
-                    await context.CatalogBrands.AddRangeAsync();
+                    await context.CatalogBrands.AddRangeAsync(GetSeedDataFromFile<CatalogBrand>());
+                }
+
+                if (!context.CatalogTypes.Any())
+                {
+                    await context.CatalogTypes.AddRangeAsync();
+                }
+
+                if (!context.CatalogItems.Any())
+                {
+                    await context.CatalogItems.AddRangeAsync();
                 }
             });
+        }
+
+        private static IEnumerable<T> GetSeedDataFromFile<T>(string filePath)
+        {
+            throw new NotImplementedException();
         }
     }
 }
