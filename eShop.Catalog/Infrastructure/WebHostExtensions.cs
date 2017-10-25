@@ -6,7 +6,7 @@ using Serilog;
 
 namespace eShop.Catalog.Infrastructure
 {
-    public static class WebHostExtensions
+    public static class IWebHostExtensions
     {
         public static IWebHost MigrateDbContext<TContext>(this IWebHost host, Action<TContext, IServiceProvider> seeder) where TContext : DbContext
         {

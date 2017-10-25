@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Data.SqlClient;
 using System.Reflection;
 using eShop.Catalog.Domain;
 using eShop.Catalog.Infrastructure;
@@ -26,10 +27,10 @@ namespace eShop.Catalog
         public IServiceProvider ConfigureServices(IServiceCollection services)
         {
             services.AddMvc();
-
+            var connectionString = Configuration["ConnectionString"];
             services.AddDbContext<CatalogContext>(options =>
             {
-                options.UseSqlServer(Configuration["ConnectionString"],
+                options.UseSqlServer(connectionString,
                     sqlServerOptionsAction: sqlOptions =>
                     {
                         sqlOptions.MigrationsAssembly(typeof(Startup).GetTypeInfo().Assembly.GetName().Name);
@@ -37,6 +38,19 @@ namespace eShop.Catalog
                         sqlOptions.EnableRetryOnFailure(maxRetryCount: 10, maxRetryDelay: TimeSpan.FromSeconds(30), errorNumbersToAdd: null);
                     });
             });
+
+            using (SqlConnection connection = new SqlConnection(connectionString))
+            {
+                try
+                {
+                    var x = 1;
+                    connection.Open();
+                }
+                catch (SqlException)
+                {
+                    var x = 0;
+                }
+            }
 
             // Add framework services.
             services.AddSwaggerGen(options =>

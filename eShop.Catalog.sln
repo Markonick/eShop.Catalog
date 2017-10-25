@@ -3,9 +3,11 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
 VisualStudioVersion = 15.0.26730.12
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "eShop.Catalog", "eShop.Catalog\eShop.Catalog.csproj", "{663FD890-84C1-470C-8E32-F9FC1A1AEEDC}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "eShop.Catalog", "eShop.Catalog\eShop.Catalog.csproj", "{663FD890-84C1-470C-8E32-F9FC1A1AEEDC}"
 EndProject
 Project("{E53339B2-1760-4266-BCC7-CA923CBCF16C}") = "docker-compose", "docker-compose.dcproj", "{6BE41D02-5944-42B0-A2B6-277047C8F41B}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "eShop.Catalog.Tests", "eShop.Catalog.Tests\eShop.Catalog.Tests.csproj", "{94338839-E026-4C0C-A488-E4D58C8D7929}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -21,6 +23,10 @@ Global
 		{6BE41D02-5944-42B0-A2B6-277047C8F41B}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{6BE41D02-5944-42B0-A2B6-277047C8F41B}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{6BE41D02-5944-42B0-A2B6-277047C8F41B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{94338839-E026-4C0C-A488-E4D58C8D7929}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{94338839-E026-4C0C-A488-E4D58C8D7929}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{94338839-E026-4C0C-A488-E4D58C8D7929}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{94338839-E026-4C0C-A488-E4D58C8D7929}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

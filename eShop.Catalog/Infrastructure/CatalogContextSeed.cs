@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Data.SqlClient;
+using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 using eShop.Catalog.Domain;
@@ -37,19 +38,30 @@ namespace eShop.Catalog.Infrastructure
 
             await retryPolicy.ExecuteAsync(async () =>
             {
+                var contentRootPath = env.ContentRootPath;
+
                 if (!context.CatalogBrands.Any())
                 {
-                    await context.CatalogBrands.AddRangeAsync();
+                    var csvFileCatalogBrands = Path.Combine(contentRootPath, "SeedFiles", "CatalogBrands.csv");
+                    var reader = new CsvFileReader<CatalogBrand>(csvFileCatalogBrands);
+                    await context.CatalogBrands.AddRangeAsync(await reader.GetDataAsync());
+                    await context.SaveChangesAsync();
                 }
 
                 if (!context.CatalogTypes.Any())
                 {
-                    await context.CatalogTypes.AddRangeAsync();
+                    var csvFileCatalogTypes = Path.Combine(contentRootPath, "SeedFiles", "CatalogTypes.csv");
+                    var reader = new CsvFileReader<CatalogType>(csvFileCatalogTypes);
+                    await context.CatalogTypes.AddRangeAsync(await reader.GetDataAsync());
+                    await context.SaveChangesAsync();
                 }
 
                 if (!context.CatalogItems.Any())
                 {
-                    await context.CatalogItems.AddRangeAsync();
+                    var csvFileCatalogItems = Path.Combine(contentRootPath, "SeedFiles", "CatalogItems.csv");
+                    var reader = new CsvFileReader<CatalogItem>(csvFileCatalogItems);
+                    await context.CatalogItems.AddRangeAsync(await reader.GetDataAsync());
+                    await context.SaveChangesAsync();
                 }
             });
         }

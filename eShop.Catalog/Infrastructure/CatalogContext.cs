@@ -13,7 +13,8 @@ namespace eShop.Catalog.Infrastructure
         public CatalogContext(DbContextOptions<CatalogContext> options) : base(options) { }
         
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
-            => optionsBuilder.UseSqlServer(@"Data Source=(LocalDb)\MSSQLLocalDB;Initial Catalog=LondonMovingSouthDb;Integrated Security=True");
+            //=> optionsBuilder.UseSqlServer(@"Data Source=(LocalDb)\MSSQLLocalDB;Initial Catalog=LondonMovingSouthDb;Integrated Security=True");
+            => optionsBuilder.UseSqlServer(@"Data Source=.\SQLEXPRESS;Initial Catalog=LondonMovingSouthDb;Integrated Security=True");
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -68,7 +69,6 @@ namespace eShop.Catalog.Infrastructure
 
             modelBuilder.Entity<CatalogBrand>()
                 .ToTable("CatalogBrands");
-
 
             modelBuilder.Entity<CatalogBrand>()
                 .HasKey(ci => ci.Id);
