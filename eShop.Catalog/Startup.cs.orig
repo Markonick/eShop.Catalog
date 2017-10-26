@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Data.SqlClient;
 using System.Reflection;
 using eShop.Catalog.Domain;
 using eShop.Catalog.Infrastructure;
@@ -26,6 +27,10 @@ namespace eShop.Catalog
         public IServiceProvider ConfigureServices(IServiceCollection services)
         {
             services.AddMvc();
+<<<<<<< HEAD
+            
+=======
+>>>>>>> d04ffc928e3f2a50e4ace351210a237548255216
             var connectionString = Configuration["ConnectionString"];
             services.AddDbContext<CatalogContext>(options =>
             {
@@ -37,6 +42,19 @@ namespace eShop.Catalog
                         sqlOptions.EnableRetryOnFailure(maxRetryCount: 10, maxRetryDelay: TimeSpan.FromSeconds(30), errorNumbersToAdd: null);
                     });
             });
+
+            using (SqlConnection connection = new SqlConnection(connectionString))
+            {
+                try
+                {
+                    var x = 1;
+                    connection.Open();
+                }
+                catch (SqlException)
+                {
+                    var x = 0;
+                }
+            }
 
             // Add framework services.
             services.AddSwaggerGen(options =>
@@ -62,7 +80,7 @@ namespace eShop.Catalog
             
             var logger = ConfigureLogger();
             services.AddSingleton(logger);
-            services.AddScoped<ICatalogRepository, CatalogRepository>();
+            services.AddScoped<ICatalogRepository, CatalogRepository>(x => new CatalogRepository(logger));
             
             var policy = Configuration.GetSection("Policy");
             var retries = policy.GetValue<int>("Retries");

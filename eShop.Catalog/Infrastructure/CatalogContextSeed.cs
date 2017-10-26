@@ -43,41 +43,29 @@ namespace eShop.Catalog.Infrastructure
 
                 if (!context.CatalogBrands.Any())
                 {
-                    var pathToCsv = Path.Combine(contentRootPath, "SeedCSVs", "CatalogBrands.csv");
-                    var reader = new FileReader<CatalogBrand>(pathToCsv);
+                    var csvFileCatalogBrands = Path.Combine(contentRootPath, "SeedFiles", "CatalogBrands.csv");
+                    var reader = new FileReader<CatalogBrand>(csvFileCatalogBrands);
                     await context.CatalogBrands.AddRangeAsync(await reader.GetDataAsync());
                     await context.SaveChangesAsync();
+
                 }
+
                 if (!context.CatalogTypes.Any())
                 {
-                    var pathToCsv = Path.Combine(contentRootPath, "SeedCSVs", "CatalogTypes.csv");
-                    var reader = new FileReader<CatalogType>(pathToCsv);
+                    var csvFileCatalogTypes = Path.Combine(contentRootPath, "SeedFiles", "CatalogTypes.csv");
+                    var reader = new CsvFileReader<CatalogType>(csvFileCatalogTypes);
                     await context.CatalogTypes.AddRangeAsync(await reader.GetDataAsync());
                     await context.SaveChangesAsync();
                 }
+
                 if (!context.CatalogItems.Any())
                 {
-                    var pathToCsv = Path.Combine(contentRootPath, "SeedCSVs", "CatalogItems.csv");
-                    var reader = new FileReader<CatalogItem>(pathToCsv);
+                    var csvFileCatalogItems = Path.Combine(contentRootPath, "SeedFiles", "CatalogItems.csv");
+                    var reader = new CsvFileReader<CatalogItem>(csvFileCatalogItems);
                     await context.CatalogItems.AddRangeAsync(await reader.GetDataAsync());
                     await context.SaveChangesAsync();
                 }
-
-                if (!context.CatalogTypes.Any())
-                {
-                    await context.CatalogTypes.AddRangeAsync();
-                }
-
-                if (!context.CatalogItems.Any())
-                {
-                    await context.CatalogItems.AddRangeAsync();
-                }
             });
-        }
-
-        private static IEnumerable<T> GetSeedDataFromFile<T>(string filePath)
-        {
-            throw new NotImplementedException();
         }
     }
 }
