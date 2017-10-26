@@ -1,15 +1,15 @@
 ﻿CatalogTypeName,CatalogBrandName,Description,Name,Price,PictureFileName,availablestock,onreorder
-Bag,Gucci,aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa,Gucci - Dionysus Small suede and leather shoulder bag,1,710.00,Gucci_bag_1.png,1,true
-Bag,Balenciaga,bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb,Balenciaga - Classic City Textured-leather Tote - Black - one size,1,045.00,balenc_bag_1.png,1,true
+Bag,Gucci,aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa,Gucci - Dionysus Small suede and leather shoulder bag,1.710.00,Gucci_bag_1.png,1,true
+Bag,Balenciaga,bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb,Balenciaga - Classic City Textured-leather Tote - Black - one size,1.045.00,balenc_bag_1.png,1,true
 Shoes,Prada,cccccccccccccccccccccccccccccccccccc,Prada Pumps & High Heels,287.00,Prada_shoes_1.png,1,true
 Shoes,Marc Jacobs,dddddddddddddddddddddddddddddddddddd,Marc Jacobs - Lucille Platform Pumps,288.00,MJacobs_shoes_1.png,1,true
 Accessory,Pierre Cardin,eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee,Pierre Cardin - Acrylic Scarf Purple Women,30.00,PCardin_accessory_1.png,10,true
-Dress,J.Crew, ffffffffffffffffffffffffffffffffffff,J.Crew - Womens Ruffly Tulle Dress,98.00,JCrew_dress_1.png,1,true
-Top,Dolce & Gabbana, ggggggggggggggggggggggggggggggggggggg,Dolce & Gabbana - Cotton-blend jacquard blouse,575.00,DnB_top_1.png,5,true
+Dress,J.Crew,ffffffffffffffffffffffffffffffffffff,J.Crew - Womens Ruffly Tulle Dress,98.00,JCrew_dress_1.png,1,true
+Top,Dolce & Gabbana,ggggggggggggggggggggggggggggggggggggg,Dolce & Gabbana - Cotton-blend jacquard blouse,575.00,DnB_top_1.png,5,true
 Top,All-Saints,hhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhh,AllSaints - Mina Top,65.00,ASaints_top_1.png,1,true
 Jeans,J-Brand,iiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiii,J Brand - Low Rise Ankle Cropped Skinny Jeans - Estate,95.00,JBrand_jeans_1.png,11,true
 T-Shirt,Cheap Monday,jjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjj,Cheap Monday - Women's Dig Arched Logo Black T-Shirt,25.00,CMonday_tee_1.png,2,true
 Vintage,Champion,kkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkk,Vintage Champion - Reverse Weave small logo pullover,27.50,Vintage_Champion_top_1.png,1,true
-Top,Fendi,llllllllllllllllllllllllllllllllll,Fendi, Fendi - Fur-embellished Cotton-Blend Sweatshirt - Women,522.00,Fendi_top_1.png,3,true
+Top,Fendi,llllllllllllllllllllllllllllllllll,Fendi - Fur-embellished Cotton-Blend Sweatshirt - Women,522.00,Fendi_top_1.png,3,true
 Bottom,Burberry,mmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmm,Burberry - Flared Stretch Jeans-Size: 29-Black,295.00,Burberry_jeans_1.png,2,true
 Shoes,Balenciaga,nnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnn, Balenciaga - Low Top Logo Sneakers - White - IT 37,435.00,Balenciaga_shoes_1.png,10,true

@@ -46,7 +46,7 @@ namespace eShop.Catalog.Infrastructure
                     {
                         var csvFileCatalogBrands = Path.Combine(contentRootPath, "SeedFiles", "CatalogBrands.csv");
                         var reader = new CsvFileReader<CatalogBrand>(csvFileCatalogBrands);
-                        await context.CatalogBrands.AddRangeAsync(await reader.GetDataAsync());
+                        await context.CatalogBrands.AddRangeAsync( reader.GetDataAsync());
                         await context.SaveChangesAsync();
 
                     }
@@ -55,7 +55,7 @@ namespace eShop.Catalog.Infrastructure
                     {
                         var csvFileCatalogTypes = Path.Combine(contentRootPath, "SeedFiles", "CatalogTypes.csv");
                         var reader = new CsvFileReader<CatalogType>(csvFileCatalogTypes);
-                        await context.CatalogTypes.AddRangeAsync(await reader.GetDataAsync());
+                        await context.CatalogTypes.AddRangeAsync( reader.GetDataAsync());
                         await context.SaveChangesAsync();
                     }
 
@@ -63,7 +63,7 @@ namespace eShop.Catalog.Infrastructure
                     {
                         var csvFileCatalogItems = Path.Combine(contentRootPath, "SeedFiles", "CatalogItems.csv");
                         var reader = new CsvFileReader<CatalogItem>(csvFileCatalogItems);
-                        await context.CatalogItems.AddRangeAsync(await reader.GetDataAsync());
+                        await context.CatalogItems.AddRangeAsync( reader.GetDataAsync());
                         await context.SaveChangesAsync();
                     }
                 }

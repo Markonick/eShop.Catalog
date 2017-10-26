@@ -14,21 +14,28 @@ namespace eShop.Catalog.Infrastructure
             _path = path;
         }
 
-        public Task<IEnumerable<T>> GetDataAsync()
+        public IEnumerable<T> GetDataAsync()
         {
             using (var reader = new StreamReader(_path))
             {
                 var csv = new CsvReader(reader);
 
-                return Task.Run(() => ReadFile(csv));
+                return ReadFile(csv);
             }
         }
 
         private static IEnumerable<T> ReadFile(IReader csv)
         {
+            //csv.Configuration.HasHeaderRecord = false;
+            csv.Configuration.MissingFieldFound = null;
             csv.Read();
             csv.ReadHeader();
-            return csv.GetRecords<T>();
+            csv.Read();
+            var x = csv.GetRecords<T>();
+            return x;
+            //csv.Read();
+            //csv.ReadHeader();
+            //return csv.GetRecords<T>();
         }
     }
 }
