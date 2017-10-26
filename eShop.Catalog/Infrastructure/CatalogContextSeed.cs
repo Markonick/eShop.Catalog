@@ -5,7 +5,6 @@ using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 using eShop.Catalog.Domain;
-using eShop.Catalog.Helpers;
 using Microsoft.AspNetCore.Hosting;
 using Polly;
 using Serilog;
@@ -41,29 +40,36 @@ namespace eShop.Catalog.Infrastructure
             {
                 var contentRootPath = env.ContentRootPath;
 
-                if (!context.CatalogBrands.Any())
+                try
                 {
-                    var csvFileCatalogBrands = Path.Combine(contentRootPath, "SeedFiles", "CatalogBrands.csv");
-                    var reader = new FileReader<CatalogBrand>(csvFileCatalogBrands);
-                    await context.CatalogBrands.AddRangeAsync(await reader.GetDataAsync());
-                    await context.SaveChangesAsync();
+                    if (!context.CatalogBrands.Any())
+                    {
+                        var csvFileCatalogBrands = Path.Combine(contentRootPath, "SeedFiles", "CatalogBrands.csv");
+                        var reader = new CsvFileReader<CatalogBrand>(csvFileCatalogBrands);
+                        await context.CatalogBrands.AddRangeAsync(await reader.GetDataAsync());
+                        await context.SaveChangesAsync();
 
+                    }
+
+                    if (!context.CatalogTypes.Any())
+                    {
+                        var csvFileCatalogTypes = Path.Combine(contentRootPath, "SeedFiles", "CatalogTypes.csv");
+                        var reader = new CsvFileReader<CatalogType>(csvFileCatalogTypes);
+                        await context.CatalogTypes.AddRangeAsync(await reader.GetDataAsync());
+                        await context.SaveChangesAsync();
+                    }
+
+                    if (!context.CatalogItems.Any())
+                    {
+                        var csvFileCatalogItems = Path.Combine(contentRootPath, "SeedFiles", "CatalogItems.csv");
+                        var reader = new CsvFileReader<CatalogItem>(csvFileCatalogItems);
+                        await context.CatalogItems.AddRangeAsync(await reader.GetDataAsync());
+                        await context.SaveChangesAsync();
+                    }
                 }
-
-                if (!context.CatalogTypes.Any())
+                catch(Exception ex)
                 {
-                    var csvFileCatalogTypes = Path.Combine(contentRootPath, "SeedFiles", "CatalogTypes.csv");
-                    var reader = new CsvFileReader<CatalogType>(csvFileCatalogTypes);
-                    await context.CatalogTypes.AddRangeAsync(await reader.GetDataAsync());
-                    await context.SaveChangesAsync();
-                }
-
-                if (!context.CatalogItems.Any())
-                {
-                    var csvFileCatalogItems = Path.Combine(contentRootPath, "SeedFiles", "CatalogItems.csv");
-                    var reader = new CsvFileReader<CatalogItem>(csvFileCatalogItems);
-                    await context.CatalogItems.AddRangeAsync(await reader.GetDataAsync());
-                    await context.SaveChangesAsync();
+                    _logger.Debug(ex.Message);
                 }
             });
         }

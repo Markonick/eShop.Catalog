@@ -24,7 +24,7 @@ namespace eShop.Catalog.Infrastructure
             }
         }
 
-        private IEnumerable<T> ReadFile(CsvReader csv)
+        private static IEnumerable<T> ReadFile(IReader csv)
         {
             csv.Read();
             csv.ReadHeader();

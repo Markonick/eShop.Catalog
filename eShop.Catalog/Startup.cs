@@ -1,9 +1,11 @@
 ﻿using System;
 using System.Reflection;
+using eShop.Catalog.API;
 using eShop.Catalog.Domain;
 using eShop.Catalog.Infrastructure;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -27,6 +29,7 @@ namespace eShop.Catalog
         {
             services.AddMvc();
             var connectionString = Configuration["ConnectionString"];
+
             services.AddDbContext<CatalogContext>(options =>
             {
                 options.UseSqlServer(connectionString,
@@ -62,8 +65,8 @@ namespace eShop.Catalog
             
             var logger = ConfigureLogger();
             services.AddSingleton(logger);
-            services.AddScoped<ICatalogRepository, CatalogRepository>();
-            
+            services.AddScoped<ICatalogRepository, CatalogRepository>(x => new CatalogRepository(logger));
+
             var policy = Configuration.GetSection("Policy");
             var retries = policy.GetValue<int>("Retries");
             var sleepDurationInSeconds = policy.GetValue<int>("SleepDurationInSeconds");
