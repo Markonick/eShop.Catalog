@@ -38,32 +38,24 @@ namespace eShop.Catalog.Infrastructure
 
             await retryPolicy.ExecuteAsync(async () =>
             {
-                var contentRootPath = env.ContentRootPath;
-
                 try
                 {
                     if (!context.CatalogBrands.Any())
                     {
-                        var csvFileCatalogBrands = Path.Combine(contentRootPath, "SeedFiles", "CatalogBrands.csv");
-                        var reader = new CsvFileReader<CatalogBrand>(csvFileCatalogBrands);
-                        await context.CatalogBrands.AddRangeAsync( reader.GetDataAsync());
+                        await context.CatalogBrands.AddRangeAsync();
                         await context.SaveChangesAsync();
 
                     }
 
                     if (!context.CatalogTypes.Any())
                     {
-                        var csvFileCatalogTypes = Path.Combine(contentRootPath, "SeedFiles", "CatalogTypes.csv");
-                        var reader = new CsvFileReader<CatalogType>(csvFileCatalogTypes);
-                        await context.CatalogTypes.AddRangeAsync( reader.GetDataAsync());
+                        await context.CatalogTypes.AddRangeAsync();
                         await context.SaveChangesAsync();
                     }
 
                     if (!context.CatalogItems.Any())
                     {
-                        var csvFileCatalogItems = Path.Combine(contentRootPath, "SeedFiles", "CatalogItems.csv");
-                        var reader = new CsvFileReader<CatalogItem>(csvFileCatalogItems);
-                        await context.CatalogItems.AddRangeAsync( reader.GetDataAsync());
+                        await context.CatalogItems.AddRangeAsync();
                         await context.SaveChangesAsync();
                     }
                 }
