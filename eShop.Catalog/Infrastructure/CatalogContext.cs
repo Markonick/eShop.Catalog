@@ -1,7 +1,6 @@
 ﻿using System;
 using eShop.Catalog.Domain;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.Design;
 using Serilog;
 
 namespace eShop.Catalog.Infrastructure

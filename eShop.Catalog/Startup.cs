@@ -36,9 +36,10 @@ namespace eShop.Catalog
                     sqlServerOptionsAction: sqlOptions =>
                     {
                         sqlOptions.MigrationsAssembly(typeof(Startup).GetTypeInfo().Assembly.GetName().Name);
+                        
                         //Configuring Connection Resiliency: https://docs.microsoft.com/en-us/ef/core/miscellaneous/connection-resiliency 
                         sqlOptions.EnableRetryOnFailure(maxRetryCount: 10, maxRetryDelay: TimeSpan.FromSeconds(30), errorNumbersToAdd: null);
-                    });
+                    }).EnableSensitiveDataLogging();
             });
 
             // Add framework services.
@@ -71,7 +72,7 @@ namespace eShop.Catalog
             var retries = policy.GetValue<int>("Retries");
             var sleepDurationInSeconds = policy.GetValue<int>("SleepDurationInSeconds");
 
-            services.AddSingleton<ICatalogContextSeed, CatalogContextSeed>(x => new CatalogContextSeed(retries, sleepDurationInSeconds, logger));
+            services.AddScoped<ICatalogContextSeed, CatalogContextSeed>(x => new CatalogContextSeed(retries, sleepDurationInSeconds, logger));
             
             return services.BuildServiceProvider();
         }
