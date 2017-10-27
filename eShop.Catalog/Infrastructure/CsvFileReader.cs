@@ -36,6 +36,8 @@ namespace eShop.Catalog.Infrastructure
             //csv.Read();
             //csv.ReadHeader();
             //return csv.GetRecords<T>();
+
+            //http://markimarta.com/c/read-csv-file-to-list-using-csvhelper/
         }
     }
 }
