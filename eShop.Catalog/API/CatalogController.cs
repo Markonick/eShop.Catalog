@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Net;
 using System.Threading.Tasks;
 using eShop.Catalog.Domain;
@@ -31,6 +32,30 @@ namespace eShop.Catalog.API
              return Ok(model);
         }
 
+        // GET api/v1/[controller]/items/withname/samplename[?pageSize=3&pageIndex=10]
+        [HttpGet("[action]/withname/{name:minlength(1)}")]
+        [ProducesResponseType(typeof(PaginatedItemsViewModel<CatalogItem>), (int)HttpStatusCode.OK)]
+        public async Task<IActionResult> Items(string name, [FromQuery]int pageSize = 10, [FromQuery]int pageIndex = 0)
+        {
+            var result = await _repository.GetItemsAsync(name, pageIndex, pageSize);
+
+            var model = new PaginatedItemsViewModel<CatalogItem>(pageIndex, pageSize, result.TotalItems, result.ItemsOnPage);
+
+            return Ok(model);
+        }
+
+        // GET api/v1/[controller]/items/withname/samplename[?pageSize=3&pageIndex=10]
+        [HttpGet("[action]/type/{catalogTypeId}/brand/{catalogBrandId}")]
+        [ProducesResponseType(typeof(PaginatedItemsViewModel<CatalogItem>), (int)HttpStatusCode.OK)]
+        public async Task<IActionResult> Items(int? catalogTypeId, int? catalogBrandId, [FromQuery]int pageSize = 10, [FromQuery]int pageIndex = 0)
+        {
+            var result = await _repository.GetItemsAsync(catalogTypeId, catalogBrandId, pageIndex, pageSize);
+
+            var model = new PaginatedItemsViewModel<CatalogItem>(pageIndex, pageSize, result.TotalItems, result.ItemsOnPage);
+
+            return Ok(model);
+        }
+
         // GET api/v1/[controller]/items/5
         [HttpGet("items/{id:int}")]
         [ProducesResponseType((int)HttpStatusCode.NotFound)]
@@ -46,8 +71,26 @@ namespace eShop.Catalog.API
             return NotFound();
         }
 
-        // POST api/v1/[controller]/items
-        [HttpPost("items")]
+        // GET api/v1/[controller]/CatalogBrands
+        [HttpGet("[action]")]
+        [ProducesResponseType(typeof(List<CatalogItem>), (int)HttpStatusCode.OK)]
+        public async Task<IActionResult> CatalogBrands()
+        {
+            var brands = await _repository.GetCatalogBrandsAsync();
+            return Ok(brands);
+        }
+
+        // GET api/v1/[controller]/CatalogTypes
+        [HttpGet("[action]")]
+        [ProducesResponseType(typeof(List<CatalogItem>), (int)HttpStatusCode.OK)]
+        public async Task<IActionResult> CatalogTypes()
+        {
+            var types = await _repository.GetCatalogTypesAsync();
+            return Ok(types);
+        }
+
+        // POST api/v1/[controller]/add
+        [HttpPost("add")]
         [ProducesResponseType((int)HttpStatusCode.Created)]
         public async Task<IActionResult> CreateProduct([FromBody]CatalogItem product)
         {
@@ -64,21 +107,21 @@ namespace eShop.Catalog.API
             }
         }
 
-        // DELETE api/v1/[controller]/items
-        [HttpDelete("{id}")]
+        // DELETE api/v1/[controller]/delete/id
+        [HttpDelete("delete/{id}")]
         [ProducesResponseType((int)HttpStatusCode.NoContent)]
-        public async Task<IActionResult> Delete(int id)
+        public async Task<IActionResult> DeleteProduct(int id)
         {
             if (await _repository.DeleteItemAsync(id) == false) return NotFound();
 
             return NoContent();
         }
 
-        // PUT api/v1/[controller]/items
-        [HttpPut("items")]
+        // PUT api/v1/[controller]/update
+        [HttpPut("update")]
         [ProducesResponseType((int)HttpStatusCode.Created)]
         [ProducesResponseType((int)HttpStatusCode.NotFound)]
-        public async Task<IActionResult> Put([FromBody]CatalogItem product)
+        public async Task<IActionResult> UpdateProduct([FromBody]CatalogItem product)
         {
 
             if (await _repository.UpdateItemAsync(product) != true) return NotFound();

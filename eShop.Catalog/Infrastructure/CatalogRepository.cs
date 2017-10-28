@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using eShop.Catalog.Domain;
@@ -41,6 +42,69 @@ namespace eShop.Catalog.Infrastructure
             }
         }
 
+        public async Task<CatalogResponse> GetItemsAsync(string name, int pageIndex, int pageSize)
+        {
+            using (var dbContext = new CatalogContext())
+            {
+                try
+                {
+                    var totalItems = await dbContext.CatalogItems.Where(c => c.Name.Contains(name))
+                        .LongCountAsync();
+
+                    var itemsOnPage = await dbContext.CatalogItems
+                        .Where(c => c.Name.Contains(name))
+                        .OrderBy(c => c.Name)
+                        .Skip(pageSize * pageIndex)
+                        .Take(pageSize)
+                        .ToListAsync();
+
+                    return new CatalogResponse { ItemsOnPage = itemsOnPage, TotalItems = totalItems };
+                }
+                catch (Exception ex)
+                {
+                    _logger.Debug(ex.Message);
+                    throw;
+                }
+            }
+        }
+
+        public async Task<CatalogResponse> GetItemsAsync(int? catalogTypeId, int? catalogBrandId, int pageIndex, int pageSize)
+        {
+            using (var dbContext = new CatalogContext())
+            {
+                try
+                {
+                    var query = (IQueryable<CatalogItem>)dbContext.CatalogItems;
+
+                    if (catalogTypeId.HasValue)
+                    {
+                        query = query.Where(ci => ci.CatalogTypeId == catalogTypeId);
+                    }
+
+                    if (catalogBrandId.HasValue)
+                    {
+                        query = query.Where(ci => ci.CatalogBrandId == catalogBrandId);
+                    }
+
+                    var totalItems = await query
+                        .LongCountAsync();
+
+                    var itemsOnPage = await query
+                        .OrderBy(c => c.Name)
+                        .Skip(pageSize * pageIndex)
+                        .Take(pageSize)
+                        .ToListAsync();
+
+                    return new CatalogResponse { ItemsOnPage = itemsOnPage, TotalItems = totalItems };
+                }
+                catch (Exception ex)
+                {
+                    _logger.Debug(ex.Message);
+                    throw;
+                }
+            }
+        }
+
         public async Task<CatalogItem> GetItemAsync(int id)
         {
             using (var dbContext = new CatalogContext())
@@ -48,6 +112,42 @@ namespace eShop.Catalog.Infrastructure
                 try
                 {
                     return await dbContext.CatalogItems.FindAsync(id);
+                }
+                catch (Exception ex)
+                {
+                    _logger.Debug(ex.Message);
+                    throw;
+                }
+            }
+        }
+
+        public async Task<List<CatalogBrand>> GetCatalogBrandsAsync()
+        {
+            using (var dbContext = new CatalogContext())
+            {
+                try
+                {
+                    return await dbContext.CatalogBrands
+                        .OrderBy(cb => cb.Brand)
+                        .ToListAsync();
+                }
+                catch(Exception ex)
+                {
+                    _logger.Debug(ex.Message);
+                    throw;
+                }
+            }
+        }
+
+        public async Task<List<CatalogType>> GetCatalogTypesAsync()
+        {
+            using (var dbContext = new CatalogContext())
+            {
+                try
+                {
+                    return await dbContext.CatalogTypes
+                        .OrderBy(cb => cb.Type)
+                        .ToListAsync();
                 }
                 catch (Exception ex)
                 {
