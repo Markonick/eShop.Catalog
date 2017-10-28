@@ -56,15 +56,18 @@ namespace eShop.Catalog.Migrations
 
                     b.Property<DateTime>("DateTimeModified");
 
-                    b.Property<string>("Description");
+                    b.Property<string>("Description")
+                        .IsRequired()
+                        .HasMaxLength(100);
 
                     b.Property<string>("Name")
                         .IsRequired()
-                        .HasMaxLength(50);
+                        .HasMaxLength(100);
 
                     b.Property<bool>("OnReorder");
 
-                    b.Property<string>("PictureFilename");
+                    b.Property<string>("PictureFilename")
+                        .IsRequired();
 
                     b.Property<decimal>("Price");
 

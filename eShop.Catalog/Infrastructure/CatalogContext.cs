@@ -13,7 +13,6 @@ namespace eShop.Catalog.Infrastructure
         public DbSet<CatalogBrand> CatalogBrands { get; set; }
 
         public CatalogContext() { }
-
         public CatalogContext(DbContextOptions<CatalogContext> options, ILogger logger) : base(options)
         {
             _logger = logger;

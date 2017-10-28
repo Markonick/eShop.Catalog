@@ -11,8 +11,8 @@ using System;
 namespace eShop.Catalog.Migrations
 {
     [DbContext(typeof(CatalogContext))]
-    [Migration("20171026223745_eShop.Catalog.Infrastructure.CatalogContext")]
-    partial class eShopCatalogInfrastructureCatalogContext
+    [Migration("20171028133552_eShop.Catalog.Infrastructure.CatalogContextSeed")]
+    partial class eShopCatalogInfrastructureCatalogContextSeed
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -57,15 +57,18 @@ namespace eShop.Catalog.Migrations
 
                     b.Property<DateTime>("DateTimeModified");
 
-                    b.Property<string>("Description");
+                    b.Property<string>("Description")
+                        .IsRequired()
+                        .HasMaxLength(100);
 
                     b.Property<string>("Name")
                         .IsRequired()
-                        .HasMaxLength(50);
+                        .HasMaxLength(100);
 
                     b.Property<bool>("OnReorder");
 
-                    b.Property<string>("PictureFilename");
+                    b.Property<string>("PictureFilename")
+                        .IsRequired();
 
                     b.Property<decimal>("Price");
 

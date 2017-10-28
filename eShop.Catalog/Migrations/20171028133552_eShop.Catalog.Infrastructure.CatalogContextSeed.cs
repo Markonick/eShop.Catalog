@@ -4,7 +4,7 @@ using System.Collections.Generic;
 
 namespace eShop.Catalog.Migrations
 {
-    public partial class eShopCatalogInfrastructureCatalogContext : Migration
+    public partial class eShopCatalogInfrastructureCatalogContextSeed : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -54,10 +54,10 @@ namespace eShop.Catalog.Migrations
                     CatalogTypeId = table.Column<int>(type: "int", nullable: false),
                     DateTimeAdded = table.Column<DateTime>(type: "datetime2", nullable: false),
                     DateTimeModified = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    Description = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    Name = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false),
+                    Description = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: false),
+                    Name = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: false),
                     OnReorder = table.Column<bool>(type: "bit", nullable: false),
-                    PictureFilename = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    PictureFilename = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Price = table.Column<decimal>(type: "decimal(18, 2)", nullable: false),
                     RestockThreshold = table.Column<int>(type: "int", nullable: false)
                 },

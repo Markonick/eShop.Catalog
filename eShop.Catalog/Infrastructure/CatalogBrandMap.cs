@@ -20,7 +20,5 @@ namespace eShop.Catalog.Infrastructure
                 .IsRequired()
                 .HasMaxLength(100);
         }
-
-
     }
 }

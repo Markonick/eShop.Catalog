@@ -64,15 +64,28 @@ namespace eShop.Catalog.Infrastructure
             {
                 try
                 {
-                    const bool result = true;
+                    var item = new CatalogItem
+                    {
+                        CatalogBrandId = product.CatalogBrandId,
+                        CatalogTypeId = product.CatalogTypeId,
+                        AvailableStock = product.AvailableStock,
+                        DateTimeAdded = DateTime.Now,
+                        DateTimeModified = DateTime.Now,
+                        Description = product.Description,
+                        Name = product.Name,
+                        OnReorder = product.OnReorder,
+                        PictureFilename = product.PictureFilename,
+                        Price = product.Price,
+                        RestockThreshold = product.RestockThreshold
+                    };
 
-                    await dbContext.CatalogItems.AddAsync(product);
+                    await dbContext.CatalogItems.AddAsync(item);
 
                     await dbContext.SaveChangesAsync();
 
                     dbContextTransaction.Commit();
 
-                    return result;
+                    return true;
                 }
                 catch (Exception ex)
                 {
@@ -90,16 +103,17 @@ namespace eShop.Catalog.Infrastructure
             {
                 try
                 {
-                    const bool result = true;
-
                     var deleteProduct = await dbContext.CatalogItems.FindAsync(id);
+
+                    if (deleteProduct == null) return false;
+
                     dbContext.CatalogItems.Remove(deleteProduct);
 
                     await dbContext.SaveChangesAsync();
 
                     dbContextTransaction.Commit();
 
-                    return result;
+                    return true;
                 }
                 catch (Exception ex)
                 {
@@ -117,16 +131,29 @@ namespace eShop.Catalog.Infrastructure
             {
                 try
                 {
-                    const bool result = true;
-
                     var updateProduct = await dbContext.CatalogItems.FindAsync(product.Id);
+
+                    if (updateProduct == null) return false;
+
+                    updateProduct.CatalogBrandId = product.CatalogBrandId;
+                    updateProduct.CatalogTypeId = product.CatalogTypeId;
+                    updateProduct.AvailableStock = product.AvailableStock;
+                    updateProduct.DateTimeAdded = product.DateTimeAdded;
+                    updateProduct.Description = product.Description;
+                    updateProduct.Name = product.Name;
+                    updateProduct.OnReorder = product.OnReorder;
+                    updateProduct.PictureFilename = product.PictureFilename;
+                    updateProduct.Price = product.Price;
+                    updateProduct.RestockThreshold = product.RestockThreshold;
                     
+                    
+                    dbContext.CatalogItems.Update(updateProduct);
 
                     await dbContext.SaveChangesAsync();
 
                     dbContextTransaction.Commit();
 
-                    return result;
+                    return true;
                 }
                 catch (Exception ex)
                 {

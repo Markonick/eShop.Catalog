@@ -1,14 +1,13 @@
 ﻿using System;
 using System.Reflection;
-using eShop.Catalog.API;
 using eShop.Catalog.Domain;
 using eShop.Catalog.Infrastructure;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Logging;
 using Serilog;
 using Serilog.Events;
 using ILogger = Serilog.ILogger;
@@ -63,23 +62,26 @@ namespace eShop.Catalog
                         .AllowAnyHeader()
                         .AllowCredentials());
             });
-            
-            var logger = ConfigureLogger();
-            services.AddSingleton(logger);
-            services.AddScoped<ICatalogRepository, CatalogRepository>(x => new CatalogRepository(logger));
 
+            var logger = ConfigureLogger();
+            services.AddSingleton<ILogger>(logger);
+            
             var policy = Configuration.GetSection("Policy");
             var retries = policy.GetValue<int>("Retries");
             var sleepDurationInSeconds = policy.GetValue<int>("SleepDurationInSeconds");
 
-            services.AddScoped<ICatalogContextSeed, CatalogContextSeed>(x => new CatalogContextSeed(retries, sleepDurationInSeconds, logger));
-            
+            services.AddScoped<ICatalogRepository, CatalogRepository>(x => new CatalogRepository(logger));
+
+
+            //services.AddTransient<ICatalogContextSeed, CatalogContextSeed>(x => new CatalogContextSeed(retries, sleepDurationInSeconds, logger));
+
             return services.BuildServiceProvider();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure(IApplicationBuilder app, IHostingEnvironment env)
+        public void Configure(IApplicationBuilder app, IHostingEnvironment env, ILoggerFactory loggerFactory)
         {
+            loggerFactory.AddSerilog();
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
