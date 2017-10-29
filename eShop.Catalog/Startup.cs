@@ -71,10 +71,7 @@ namespace eShop.Catalog
             var sleepDurationInSeconds = policy.GetValue<int>("SleepDurationInSeconds");
 
             services.AddScoped<ICatalogRepository, CatalogRepository>(x => new CatalogRepository(logger));
-
-
-            //services.AddTransient<ICatalogContextSeed, CatalogContextSeed>(x => new CatalogContextSeed(retries, sleepDurationInSeconds, logger));
-
+            
             return services.BuildServiceProvider();
         }
 
