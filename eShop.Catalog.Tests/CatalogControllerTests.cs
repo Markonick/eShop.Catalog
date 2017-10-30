@@ -95,8 +95,9 @@ namespace eShop.Catalog.Tests
         public async Task CatalogController_GetById_Should_Return_HttpNotFound_when_no_items_found()
         {
             //Arrange
+            var item = new CatalogItem {  };
             var id = 1;
-            _repository.Setup(x => x.GetItemAsync(id)).Returns(Task.FromResult(null));
+            _repository.Setup(x => x.GetItemAsync(id)).Returns(Task.FromResult(item));
 
             //Act
             var controller = new CatalogController(_repository.Object, _logger.Object);
@@ -104,7 +105,7 @@ namespace eShop.Catalog.Tests
 
             //Assert
             Assert.NotNull(actionResult);
-            Assert.Equal(actionResult.StatusCode, (int)HttpStatusCode.OK);
+            Assert.Equal(actionResult.StatusCode, (int)HttpStatusCode.NotFound);
         }
 
         [Fact]
