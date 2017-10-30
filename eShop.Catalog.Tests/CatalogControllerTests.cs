@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Net;
+using System.Threading.Tasks;
 using eShop.Catalog.API;
 using eShop.Catalog.Domain;
 using Microsoft.AspNetCore.Mvc;
@@ -21,19 +22,18 @@ namespace eShop.Catalog.Tests
         {
             _logger = new Mock<ILogger>();
             _repository = new Mock<ICatalogRepository>();
-            _controller = new CatalogController(_repository.Object, _logger.Object);
         }
 
         [Fact]
-        public void CatalogControllerShouldReturnAllItems()
+        public async Task CatalogControllerShouldReturnAllItems()
         {
             //Arrange
             var items = CreateCatalog();
-            _repository.Setup(x => x.GetItemsAsync(10, 0)).ReturnsAsync(items);
+            _repository.Setup(x => x.GetItemsAsync(0, 10)).Returns(Task.FromResult(items));
+            var controller = new CatalogController(_repository.Object, _logger.Object);
 
             //Act
-            var result = _controller.Items();
-            var actionResult =  result.Result as OkObjectResult;
+            var actionResult = await controller.Items(10, 0) as ObjectResult;
 
             //Assert
             Assert.Equal(actionResult.StatusCode, (int)HttpStatusCode.OK);
