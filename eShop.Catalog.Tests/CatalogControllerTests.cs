@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Net;
 using System.Threading.Tasks;
 using eShop.Catalog.API;
@@ -25,7 +26,7 @@ namespace eShop.Catalog.Tests
         }
 
         [Fact]
-        public async Task CatalogControllerShouldReturnAllItems()
+        public async Task CatalogControllerItems_Should_Return_HttpOk()
         {
             //Arrange
             var items = CreateCatalog();
@@ -36,8 +37,115 @@ namespace eShop.Catalog.Tests
             var actionResult = await controller.Items(10, 0) as ObjectResult;
 
             //Assert
+            Assert.NotNull(actionResult);
             Assert.Equal(actionResult.StatusCode, (int)HttpStatusCode.OK);
         }
+
+        [Fact]
+        public async Task CatalogControllerItems_By_Name_Should_Return_HttpOk()
+        {
+            //Arrange
+            const string name = "ba";
+            var items = CreateCatalog();
+            _repository.Setup(x => x.GetItemsAsync(name, 0, 10)).Returns(Task.FromResult(items));
+            var controller = new CatalogController(_repository.Object, _logger.Object);
+
+            //Act
+            var actionResult = await controller.Items(name, 10, 0) as ObjectResult;
+            
+            //Assert
+            Assert.NotNull(actionResult);
+            Assert.Equal(actionResult.StatusCode, (int)HttpStatusCode.OK);
+        }
+
+        [Fact]
+        public async Task CatalogControllerItems_By_Brand_And_TypeId_Should_Return_HttpOk()
+        {
+            //Arrange
+            var items = CreateCatalog();
+            _repository.Setup(x => x.GetItemsAsync(1, 1, 0, 10)).Returns(Task.FromResult(items));
+            var controller = new CatalogController(_repository.Object, _logger.Object);
+
+            //Act
+            var actionResult = await controller.Items(1, 1, 10, 0) as ObjectResult;
+
+            //Assert
+            Assert.NotNull(actionResult);
+            Assert.Equal(actionResult.StatusCode, (int)HttpStatusCode.OK);
+        }
+        
+        [Fact]
+        public async Task CatalogController_GetById_Should_Return_HttpOk()
+        {
+            //Arrange
+            var item = new CatalogItem {AvailableStock = 1, Name = "name"};
+            var id = 1;
+            _repository.Setup(x => x.GetItemAsync(id)).Returns(Task.FromResult(item));
+            var controller = new CatalogController(_repository.Object, _logger.Object);
+
+            //Act
+            var actionResult = await controller.GetById(id) as ObjectResult;
+
+            //Assert
+            Assert.NotNull(actionResult);
+            Assert.Equal(actionResult.StatusCode, (int)HttpStatusCode.OK);
+        }
+
+        /*[Fact]
+        public async Task CatalogController_GetById_Should_Return_HttpNotFound_when_no_items_found()
+        {
+            //Arrange
+            var item = ;
+            var id = 1;
+            _repository.Setup(x => x.GetItemAsync(id)).Returns(Task.FromResult());
+            var controller = new CatalogController(_repository.Object, _logger.Object);
+
+            //Act
+            var actionResult = await controller.GetById(id) as ObjectResult;
+
+            //Assert
+            Assert.NotNull(actionResult);
+            Assert.Equal(actionResult.StatusCode, (int)HttpStatusCode.OK);
+        }*/
+
+        [Fact]
+        public async Task CatalogController_GetById_Should_Return_HttpBadRequest_when_id_0()
+        {
+            //Arrange
+            var item = new CatalogItem { AvailableStock = 1, Name = "name" };
+            var id = 1;
+            _repository.Setup(x => x.GetItemAsync(id)).Returns(Task.FromResult(item));
+            var controller = new CatalogController(_repository.Object, _logger.Object);
+
+            //Act
+            var actionResult = await controller.GetById(0) as ObjectResult;
+
+            //Assert
+            Assert.NotNull(actionResult);
+            Assert.Equal(actionResult, (int)HttpStatusCode.BadRequest);
+        }
+
+        //GetCatalogTypesAsync
+        //GetCatalogBrandsAsync
+
+        [Fact]
+        public async Task CatalogController_GetCatalogTypesAsync_Should_Return_HttpOk()
+        {
+            //Arrange
+            var item = new CatalogItem { AvailableStock = 1, Name = "name" };
+            var id = 1;
+            _repository.Setup(x => x.GetItemAsync(id)).Returns(Task.FromResult(item));
+            var controller = new CatalogController(_repository.Object, _logger.Object);
+
+            //Act
+            var actionResult = await controller.GetById(id) as ObjectResult;
+
+            //Assert
+            Assert.NotNull(actionResult);
+            Assert.Equal(actionResult.StatusCode, (int)HttpStatusCode.OK);
+        }
+
+
 
         private CatalogResponse CreateCatalog()
         {
