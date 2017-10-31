@@ -1,8 +1,6 @@
 ﻿using System;
 using eShop.Catalog.Domain;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Configuration;
-using Microsoft.IdentityModel.Protocols;
 using Serilog;
 
 namespace eShop.Catalog.Infrastructure
@@ -10,19 +8,17 @@ namespace eShop.Catalog.Infrastructure
     public class CatalogContext : DbContext
     {
         private readonly ILogger _logger;
-        private readonly IConfiguration _config;
+
+        public string ConnectionString { get; set; }
+
         public DbSet<CatalogItem> CatalogItems { get; set; }
         public DbSet<CatalogType> CatalogTypes { get; set; }
         public DbSet<CatalogBrand> CatalogBrands { get; set; }
-
-        public CatalogContext(){ }
+        
         public CatalogContext(DbContextOptions<CatalogContext> options, ILogger logger) : base(options)
         {
             _logger = logger;
         }
-        
-        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
-            => optionsBuilder.UseSqlServer(@"Data Source=.\SQLEXPRESS;Initial Catalog=LondonMovingSouthDb;Integrated Security=True");
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {

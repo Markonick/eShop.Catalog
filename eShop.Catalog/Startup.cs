@@ -78,8 +78,9 @@ namespace eShop.Catalog
             var retries = policy.GetValue<int>("Retries");
             var sleepDurationInSeconds = policy.GetValue<int>("SleepDurationInSeconds");
 
-            services.AddScoped<ICatalogRepository, CatalogRepository>(x => new CatalogRepository(logger));
+            services.AddSingleton<ICatalogRepository, CatalogRepository>();
 
+            services.AddSingleton(_ => Configuration);
             return services.BuildServiceProvider();
         }
 

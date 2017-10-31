@@ -30,7 +30,7 @@ namespace eShop.Catalog.Tests
             var server = new TestServer(builder);
 
             var context = server.Host.Services.GetService(typeof(CatalogContext)) as CatalogContext;
-            _repository = new CatalogRepository(logger.Object);
+            _repository = new CatalogRepository(context, logger.Object);
 
             var catalogResponse = TestCatalog.Create();
 
