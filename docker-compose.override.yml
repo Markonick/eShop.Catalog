@@ -8,4 +8,4 @@ services:
       - ConnectionString=Server=MARKONICK;Initial Catalog=LondonMovingSouthDb;User Id=markonicky;Password=TheOtto23
       - ExternalCatalogBaseUrl=http://localhost:5101
     ports:
-      - "5101:80"
+      - "5101:5101"
