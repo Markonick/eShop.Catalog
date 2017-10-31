@@ -92,16 +92,14 @@ namespace eShop.Catalog.Tests
         }
 
         [Fact]
-        public async Task CatalogController_GetById_Should_Return_HttpNotFound_when_no_items_found()
+        public async Task CatalogController_GetById_Should_Return_HttpNotFound_when_no_items_available()
         {
             //Arrange
-            var item = new CatalogItem {  };
-            var id = 1;
-            _repository.Setup(x => x.GetItemAsync(id)).Returns(Task.FromResult(item));
+            _repository.Setup(x => x.GetItemAsync(1)).Returns(Task.FromResult((CatalogItem) null));
 
             //Act
             var controller = new CatalogController(_repository.Object, _logger.Object);
-            var actionResult = await controller.GetById(id) as ObjectResult;
+            var actionResult = await controller.GetById(1) as NotFoundResult;
 
             //Assert
             Assert.NotNull(actionResult);
@@ -126,13 +124,13 @@ namespace eShop.Catalog.Tests
         }
 
         [Fact]
-        public async Task CatalogController_GetCatalogTypesAsync_Should_Return_HttpOk()
+        public async Task CatalogController_GetCatalogTypes_Should_Return_HttpOk()
         {
             //Arrange
             _repository.Setup(x => x.GetCatalogTypesAsync()).Returns(Task.FromResult(new List<CatalogType>()));
-            var controller = new CatalogController(_repository.Object, _logger.Object);
 
             //Act
+            var controller = new CatalogController(_repository.Object, _logger.Object);
             var actionResult = await controller.CatalogTypes() as ObjectResult;
 
             //Assert
@@ -141,15 +139,15 @@ namespace eShop.Catalog.Tests
         }
 
         [Fact]
-        public async Task CatalogController_GetCatalogBrandsAsync_Should_Return_HttpOk()
+        public async Task CatalogController_GetCatalogBrands_Should_Return_HttpOk()
         {
             //Arrange
             var item = new CatalogItem { AvailableStock = 1, Name = "name" };
             var id = 1;
             _repository.Setup(x => x.GetCatalogBrandsAsync()).Returns(Task.FromResult(new List<CatalogBrand>()));
-            var controller = new CatalogController(_repository.Object, _logger.Object);
 
             //Act
+            var controller = new CatalogController(_repository.Object, _logger.Object);
             var actionResult = await controller.CatalogBrands() as ObjectResult;
 
             //Assert
@@ -157,7 +155,100 @@ namespace eShop.Catalog.Tests
             Assert.Equal(actionResult.StatusCode, (int)HttpStatusCode.OK);
         }
 
+        [Fact]
+        public async Task CatalogController_CreateProduct_Should_Return_Created()
+        {
+            //Arrange
+            var item = new CatalogItem { AvailableStock = 1, Name = "name" };
+            _repository.Setup(x => x.AddItemAsync(item)).Returns(Task.FromResult(true));
 
+            //Act
+            var controller = new CatalogController(_repository.Object, _logger.Object);
+            var actionResult = await controller.CreateProduct(item) as ObjectResult;
+
+            //Assert
+            Assert.NotNull(actionResult);
+            Assert.Equal(actionResult.StatusCode, (int)HttpStatusCode.Created);
+        }
+
+        [Fact]
+        public async Task CatalogController_CreateProduct_Should_Return_BadRequest_with_invalid_product()
+        {
+            //Arrange
+            _repository.Setup(x => x.AddItemAsync(null)).Returns(Task.FromResult(false));
+
+            //Act
+            var controller = new CatalogController(_repository.Object, _logger.Object);
+            var actionResult = await controller.CreateProduct(null) as BadRequestResult;
+
+            //Assert
+            Assert.NotNull(actionResult);
+            Assert.Equal(actionResult.StatusCode, (int)HttpStatusCode.BadRequest);
+        }
+        
+        [Fact]
+        public async Task CatalogController_DeleteProduct_Should_Return_NoContent()
+        {
+            //Arrange
+            var item = new CatalogItem { Id = 1, AvailableStock = 1, Name = "name" };
+            _repository.Setup(x => x.DeleteItemAsync(item.Id)).Returns(Task.FromResult(true));
+
+            //Act
+            var controller = new CatalogController(_repository.Object, _logger.Object);
+            var actionResult = await controller.DeleteProduct(item.Id) as NoContentResult;
+
+            //Assert
+            Assert.NotNull(actionResult);
+            Assert.Equal(actionResult.StatusCode, (int)HttpStatusCode.NoContent);
+        }
+
+        [Fact]
+        public async Task CatalogController_DeleteProduct_Should_Return_NotFound()
+        {
+            //Arrange
+            var item = new CatalogItem { Id = 1, AvailableStock = 1, Name = "name" };
+            _repository.Setup(x => x.DeleteItemAsync(item.Id)).Returns(Task.FromResult(false));
+
+            //Act
+            var controller = new CatalogController(_repository.Object, _logger.Object);
+            var actionResult = await controller.DeleteProduct(item.Id) as NotFoundResult;
+
+            //Assert
+            Assert.NotNull(actionResult);
+            Assert.Equal(actionResult.StatusCode, (int)HttpStatusCode.NotFound);
+        }
+
+        [Fact]
+        public async Task CatalogController_UpdateProduct_Should_Return_Created()
+        {
+            //Arrange
+            var item = new CatalogItem { AvailableStock = 1, Name = "name" };
+            _repository.Setup(x => x.UpdateItemAsync(item)).Returns(Task.FromResult(true));
+
+            //Act
+            var controller = new CatalogController(_repository.Object, _logger.Object);
+            var actionResult = await controller.UpdateProduct(item) as ObjectResult;
+
+            //Assert
+            Assert.NotNull(actionResult);
+            Assert.Equal(actionResult.StatusCode, (int)HttpStatusCode.Created);
+        }
+
+        [Fact]
+        public async Task CatalogController_UpdateProduct_Should_Return_NotFound()
+        {
+            //Arrange
+            var item = new CatalogItem { AvailableStock = 1, Name = "name" };
+            _repository.Setup(x => x.UpdateItemAsync(item)).Returns(Task.FromResult(false));
+
+            //Act
+            var controller = new CatalogController(_repository.Object, _logger.Object);
+            var actionResult = await controller.UpdateProduct(item) as NotFoundResult;
+
+            //Assert
+            Assert.NotNull(actionResult);
+            Assert.Equal(actionResult.StatusCode, (int)HttpStatusCode.NotFound);
+        }
 
         private CatalogResponse CreateCatalog()
         {
