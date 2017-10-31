@@ -30,6 +30,7 @@ namespace eShop.Catalog.Tests
             var server = new TestServer(builder);
 
             var context = server.Host.Services.GetService(typeof(CatalogContext)) as CatalogContext;
+            
             _repository = new CatalogRepository(context, logger.Object);
 
             var catalogResponse = TestCatalog.Create();
@@ -45,11 +46,27 @@ namespace eShop.Catalog.Tests
         [Fact]
         public async Task Get_Items_Should_Return_Catalog()
         {
+            //Arrange
+            const int expectedNumberOfItems = 10;
 
+            //Act
             var result = await _repository.GetItemsAsync(0, 10);
 
-            var expectedNumberOfItems = 10;
-            Assert.Equal(result.TotalItems, expectedNumberOfItems);
+            //Assert
+            Assert.Equal(result.ItemsOnPage.Count, expectedNumberOfItems);
+        }
+
+        [Fact]
+        public async Task Get_Items_Should_Return_Catalog_By_Name()
+        {
+            //Arrange
+            const int expectedNumberOfItems = 10;
+
+            //Act
+            var result = await _repository.GetItemsAsync(0, 10);
+
+            //Assert
+            Assert.Equal(result.ItemsOnPage.Count, expectedNumberOfItems);
         }
 
         private static DbContextOptions<CatalogContext> GetInMemoryContextOptions()
