@@ -1,5 +1,6 @@
 ﻿using System;
 using eShop.Catalog.Domain;
+using eShop.Catalog.Infrastructure.EntityConfigurations;
 using Microsoft.EntityFrameworkCore;
 using Serilog;
 
@@ -8,8 +9,6 @@ namespace eShop.Catalog.Infrastructure
     public class CatalogContext : DbContext
     {
         private readonly ILogger _logger;
-
-        public string ConnectionString { get; set; }
 
         public DbSet<CatalogItem> CatalogItems { get; set; }
         public DbSet<CatalogType> CatalogTypes { get; set; }
@@ -24,9 +23,9 @@ namespace eShop.Catalog.Infrastructure
         {
             try
             {
-                modelBuilder.ApplyConfiguration(new CatalogBrandMap());
-                modelBuilder.ApplyConfiguration(new CatalogTypeMap());
-                modelBuilder.ApplyConfiguration(new CatalogItemMap());
+                modelBuilder.ApplyConfiguration(new CatalogBrandConfiguration());
+                modelBuilder.ApplyConfiguration(new CatalogTypeConfiguration());
+                modelBuilder.ApplyConfiguration(new CatalogItemConfiguration());
             }
             catch(Exception ex)
             {

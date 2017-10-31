@@ -7,8 +7,6 @@ namespace eShop.Catalog.Tests.Helpers
 {
     public static class TestCatalog
     {
-
-
         public static IEnumerable<CatalogBrand> CreateBrands()
         {
             IEnumerable<CatalogBrand> brands = new List<CatalogBrand>
