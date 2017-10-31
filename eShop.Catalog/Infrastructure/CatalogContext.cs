@@ -19,7 +19,7 @@ namespace eShop.Catalog.Infrastructure
         }
         
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
-            => optionsBuilder.UseSqlServer(@"Server=(LocalDb)\MSSQLLocalDB;Initial Catalog=LondonMovingSouthDb;Integrated Security=True");
+            => optionsBuilder.UseSqlServer(@"Server=MARKONICK;Initial Catalog=LondonMovingSouthDb;User Id=markonicky;Password=TheOtto23");
             //=> optionsBuilder.UseSqlServer(@"Data Source=.\SQLEXPRESS;Initial Catalog=LondonMovingSouthDb;Integrated Security=True");
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)

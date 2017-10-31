@@ -4,9 +4,8 @@ services:
   eshop.catalog:
     environment:
       - ASPNETCORE_ENVIRONMENT=Development
+      - ASPNETCORE_URLS=http://0.0.0.0:80
+      - ConnectionString=Server=MARKONICK;Initial Catalog=LondonMovingSouthDb;User Id=markonicky;Password=TheOtto23
+      - ExternalCatalogBaseUrl=http://localhost:5101
     ports:
-      - "80"
-networks:
-  default:
-    external:
-      name: nat
+      - "5101:80"
