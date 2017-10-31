@@ -5,7 +5,7 @@ services:
     environment:
       - ASPNETCORE_ENVIRONMENT=Development
       - ASPNETCORE_URLS=http://0.0.0.0:80
-      - ConnectionString=Server=MARKONICK;Initial Catalog=LondonMovingSouthDb;User Id=markonicky;Password=TheOtto23
+      - ConnectionString=Server=MARKONICK;Initial Catalog=LondonMovingSouthDb;User Id=markonicky;Password=Password
       - ExternalCatalogBaseUrl=http://localhost:5101
     ports:
       - "5101:5101"

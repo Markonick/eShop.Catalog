@@ -26,7 +26,7 @@ namespace eShop.Catalog.Tests
         }
 
         [Fact]
-        public async Task CatalogControllerItems_Should_Return_HttpOk()
+        public async Task Items_Should_Return_HttpOk()
         {
             //Arrange
             var items = CreateCatalog();
@@ -42,7 +42,7 @@ namespace eShop.Catalog.Tests
         }
 
         [Fact]
-        public async Task CatalogControllerItems_By_Name_Should_Return_HttpOk()
+        public async Task Items_By_Name_Should_Return_HttpOk()
         {
             //Arrange
             const string name = "ba";
@@ -59,7 +59,7 @@ namespace eShop.Catalog.Tests
         }
 
         [Fact]
-        public async Task CatalogControllerItems_By_Brand_And_TypeId_Should_Return_HttpOk()
+        public async Task Items_By_Brand_And_TypeId_Should_Return_HttpOk()
         {
             //Arrange
             var items = CreateCatalog();
@@ -75,7 +75,7 @@ namespace eShop.Catalog.Tests
         }
         
         [Fact]
-        public async Task CatalogController_GetById_Should_Return_HttpOk()
+        public async Task Get_Item_By_Id_Should_Return_HttpOk()
         {
             //Arrange
             var item = new CatalogItem {AvailableStock = 1, Name = "name"};
@@ -92,7 +92,7 @@ namespace eShop.Catalog.Tests
         }
 
         [Fact]
-        public async Task CatalogController_GetById_Should_Return_HttpNotFound_when_no_items_available()
+        public async Task Get_Item_By_Id_Should_Return_HttpNotFound_when_no_items_available()
         {
             //Arrange
             _repository.Setup(x => x.GetItemAsync(1)).Returns(Task.FromResult((CatalogItem) null));
@@ -107,7 +107,7 @@ namespace eShop.Catalog.Tests
         }
 
         [Fact]
-        public async Task CatalogController_GetById_Should_Return_HttpBadRequest_when_id_0()
+        public async Task Get_Item_By_Id_Should_Return_HttpBadRequest_when_id_0()
         {
             //Arrange
             var item = new CatalogItem { AvailableStock = 1, Name = "name" };
@@ -124,7 +124,7 @@ namespace eShop.Catalog.Tests
         }
 
         [Fact]
-        public async Task CatalogController_GetCatalogTypes_Should_Return_HttpOk()
+        public async Task Get_Catalog_Types_Should_Return_HttpOk()
         {
             //Arrange
             _repository.Setup(x => x.GetCatalogTypesAsync()).Returns(Task.FromResult(new List<CatalogType>()));
@@ -139,7 +139,7 @@ namespace eShop.Catalog.Tests
         }
 
         [Fact]
-        public async Task CatalogController_GetCatalogBrands_Should_Return_HttpOk()
+        public async Task Get_Catalog_Brands_Should_Return_HttpOk()
         {
             //Arrange
             var item = new CatalogItem { AvailableStock = 1, Name = "name" };
@@ -156,7 +156,7 @@ namespace eShop.Catalog.Tests
         }
 
         [Fact]
-        public async Task CatalogController_CreateProduct_Should_Return_Created()
+        public async Task Create_Product_Should_Return_Created()
         {
             //Arrange
             var item = new CatalogItem { AvailableStock = 1, Name = "name" };
@@ -172,7 +172,7 @@ namespace eShop.Catalog.Tests
         }
 
         [Fact]
-        public async Task CatalogController_CreateProduct_Should_Return_BadRequest_with_invalid_product()
+        public async Task Create_Product_Should_Return_BadRequest_with_invalid_product()
         {
             //Arrange
             _repository.Setup(x => x.AddItemAsync(null)).Returns(Task.FromResult(false));
@@ -187,7 +187,7 @@ namespace eShop.Catalog.Tests
         }
         
         [Fact]
-        public async Task CatalogController_DeleteProduct_Should_Return_NoContent()
+        public async Task Delete_Product_Should_Return_NoContent()
         {
             //Arrange
             var item = new CatalogItem { Id = 1, AvailableStock = 1, Name = "name" };
@@ -203,7 +203,7 @@ namespace eShop.Catalog.Tests
         }
 
         [Fact]
-        public async Task CatalogController_DeleteProduct_Should_Return_NotFound()
+        public async Task Delete_Product_Should_Return_NotFound_With_Non_Existing_Product()
         {
             //Arrange
             var item = new CatalogItem { Id = 1, AvailableStock = 1, Name = "name" };
@@ -219,7 +219,7 @@ namespace eShop.Catalog.Tests
         }
 
         [Fact]
-        public async Task CatalogController_UpdateProduct_Should_Return_Created()
+        public async Task Update_Product_Should_Return_Created()
         {
             //Arrange
             var item = new CatalogItem { AvailableStock = 1, Name = "name" };
@@ -235,7 +235,7 @@ namespace eShop.Catalog.Tests
         }
 
         [Fact]
-        public async Task CatalogController_UpdateProduct_Should_Return_NotFound()
+        public async Task Update_Product_Should_Return_NotFound_With_Non_Existing_Product()
         {
             //Arrange
             var item = new CatalogItem { AvailableStock = 1, Name = "name" };

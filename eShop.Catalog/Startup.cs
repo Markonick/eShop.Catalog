@@ -85,7 +85,7 @@ namespace eShop.Catalog
             }
 
             app.UseCors("CorsPolicy");
-
+            
             app.UseMvcWithDefaultRoute();
 
             app.UseSwagger()
