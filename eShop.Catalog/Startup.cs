@@ -16,30 +16,38 @@ namespace eShop.Catalog
 {
     public class Startup
     {
-        public Startup(IConfiguration configuration)
+        public IConfiguration Configuration { get; }
+        public IHostingEnvironment Env { get; }
+
+        public Startup(IConfiguration configuration, IHostingEnvironment env)
         {
             Configuration = configuration;
+            Env = env;
         }
-
-        public IConfiguration Configuration { get; }
 
         // This method gets called by the runtime. Use this method to add services to the container.
         public IServiceProvider ConfigureServices(IServiceCollection services)
         {
             services.AddMvc();
-            var connectionString = Configuration["ConnectionString"];
-
-            services.AddDbContext<CatalogContext>(options =>
+            if (Env.IsEnvironment("Testing"))
             {
-                options.UseSqlServer(connectionString,
-                    sqlServerOptionsAction: sqlOptions =>
-                    {
-                        sqlOptions.MigrationsAssembly(typeof(Startup).GetTypeInfo().Assembly.GetName().Name);
-                        
-                        //Configuring Connection Resiliency: https://docs.microsoft.com/en-us/ef/core/miscellaneous/connection-resiliency 
-                        sqlOptions.EnableRetryOnFailure(maxRetryCount: 10, maxRetryDelay: TimeSpan.FromSeconds(30), errorNumbersToAdd: null);
-                    }).EnableSensitiveDataLogging();
-            });
+                services.AddDbContext<CatalogContext>(options => options.UseInMemoryDatabase("TestingDB"));
+            }
+            else
+            {
+                services.AddDbContext<CatalogContext>(options =>
+                {
+                    var connectionString = Configuration["ConnectionString"];
+                    options.UseSqlServer(connectionString,
+                        sqlServerOptionsAction: sqlOptions =>
+                        {
+                            sqlOptions.MigrationsAssembly(typeof(Startup).GetTypeInfo().Assembly.GetName().Name);
+
+                            //Configuring Connection Resiliency: https://docs.microsoft.com/en-us/ef/core/miscellaneous/connection-resiliency 
+                            sqlOptions.EnableRetryOnFailure(maxRetryCount: 10, maxRetryDelay: TimeSpan.FromSeconds(30), errorNumbersToAdd: null);
+                        }).EnableSensitiveDataLogging();
+                });
+            }
 
             // Add framework services.
             services.AddSwaggerGen(options =>
@@ -71,7 +79,7 @@ namespace eShop.Catalog
             var sleepDurationInSeconds = policy.GetValue<int>("SleepDurationInSeconds");
 
             services.AddScoped<ICatalogRepository, CatalogRepository>(x => new CatalogRepository(logger));
-            
+
             return services.BuildServiceProvider();
         }
 
