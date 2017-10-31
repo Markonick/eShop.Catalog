@@ -7,8 +7,71 @@ namespace eShop.Catalog.Tests.Helpers
 {
     public static class TestCatalog
     {
-       
-        public static CatalogResponse Create()
+
+
+        public static IEnumerable<CatalogBrand> CreateBrands()
+        {
+            IEnumerable<CatalogBrand> brands = new List<CatalogBrand>
+            {
+                new CatalogBrand{ Brand = "Gucci" },
+                new CatalogBrand{ Brand = "Prada" },
+                new CatalogBrand{ Brand = "Balenciaga" },
+                new CatalogBrand{ Brand = "Marc Jacobs" },
+                new CatalogBrand{ Brand = "Pierre Cardin" },
+                new CatalogBrand{ Brand = "J.Crew" },
+                new CatalogBrand{ Brand = "Dolce & Gabbana" },
+                new CatalogBrand{ Brand = "AllSaints" },
+                new CatalogBrand{ Brand = "J-Brand" },
+                new CatalogBrand{ Brand = "Cheap Monday" },
+                new CatalogBrand{ Brand = "Fendi" },
+                new CatalogBrand{ Brand = "Burberry" },
+                new CatalogBrand{ Brand = "American Eagle Outfitters" },
+                new CatalogBrand{ Brand = "Moschino" },
+                new CatalogBrand{ Brand = "G-Star Raw" },
+                new CatalogBrand{ Brand = "Salvatore Ferragamo" },
+                new CatalogBrand{ Brand = "Coco Channel" },
+                new CatalogBrand{ Brand = "Calvin Klein" },
+                new CatalogBrand{ Brand = "Versace" },
+                new CatalogBrand{ Brand = "Ralph Lauren" },
+                new CatalogBrand{ Brand = "Christian Dior" },
+                new CatalogBrand{ Brand = "Yves Saint Laurent" },
+                new CatalogBrand{ Brand = "Christian Louboutin" },
+                new CatalogBrand{ Brand = "Karl Lagarfeld" },
+                new CatalogBrand{ Brand = "Roberto Cavalli" },
+                new CatalogBrand{ Brand = "Alexander McQueen" },
+                new CatalogBrand{ Brand = "Valentino" },
+                new CatalogBrand{ Brand = "Jean-Paul Gaultier" },
+                new CatalogBrand{ Brand = "Jimmy Choo" },
+                new CatalogBrand{ Brand = "Vera Wang" },
+                new CatalogBrand{ Brand = "Viviene Westwood" },
+                new CatalogBrand{ Brand = "Levis" },
+                new CatalogBrand{ Brand = "Diesel" },
+                new CatalogBrand{ Brand = "Hugo Boss" },
+                new CatalogBrand{ Brand = "Champion" }
+            };
+
+            return brands;
+        }
+
+        public static IEnumerable<CatalogType> CreateTypes()
+        {
+            IEnumerable<CatalogType> types = new List<CatalogType>
+            {
+                new CatalogType{ Type = "Shoes" },
+                new CatalogType{ Type = "Bags" },
+                new CatalogType{ Type = "Accessories" },
+                new CatalogType{ Type = "Vintage" },
+                new CatalogType{ Type = "Tops" },
+                new CatalogType{ Type = "Dresses" },
+                new CatalogType{ Type = "Jeans" },
+                new CatalogType{ Type = "Bottoms" },
+                new CatalogType{ Type = "T-Shirts" },
+            };
+
+            return types;
+        }
+
+        public static CatalogResponse CreateItems()
         {
             IEnumerable<CatalogItem> items = new List<CatalogItem>
             {

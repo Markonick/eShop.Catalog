@@ -28,7 +28,7 @@ namespace eShop.Catalog.Tests
         public async Task Items_Should_Return_HttpOk()
         {
             //Arrange
-            var items = TestCatalog.Create();
+            var items = TestCatalog.CreateItems();
             _repository.Setup(x => x.GetItemsAsync(0, 10)).Returns(Task.FromResult(items));
 
             //Act
@@ -45,7 +45,7 @@ namespace eShop.Catalog.Tests
         {
             //Arrange
             const string name = "ba";
-            var items = TestCatalog.Create();
+            var items = TestCatalog.CreateItems();
             _repository.Setup(x => x.GetItemsAsync(name, 0, 10)).Returns(Task.FromResult(items));
 
             //Act
@@ -61,7 +61,7 @@ namespace eShop.Catalog.Tests
         public async Task Items_By_Brand_And_TypeId_Should_Return_HttpOk()
         {
             //Arrange
-            var items = TestCatalog.Create();
+            var items = TestCatalog.CreateItems();
             _repository.Setup(x => x.GetItemsAsync(1, 1, 0, 10)).Returns(Task.FromResult(items));
 
             //Act
