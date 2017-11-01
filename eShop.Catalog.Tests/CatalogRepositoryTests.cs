@@ -7,7 +7,6 @@ using eShop.Catalog.Infrastructure;
 using eShop.Catalog.Tests.Helpers;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.TestHost;
-using Microsoft.EntityFrameworkCore.Storage;
 using Moq;
 using Serilog;
 using Xunit;
@@ -17,16 +16,33 @@ namespace eShop.Catalog.Tests
     public class CatalogRepositoryTests
     {
         private readonly ICatalogRepository _repository;
+        private readonly CatalogContext _context;
+        private readonly IEnumerable<CatalogBrand> _catalogBrands;
         private readonly IEnumerable<CatalogType> _catalogTypes;
         private readonly CatalogResponse _catalogResponse;
-        private readonly CatalogContext _context;
-        private IDbContextTransaction _transaction;
 
         public CatalogRepositoryTests()
         {
-            _logger = SetupRepositoryTests(out var context);
-           
+            var logger = new Mock<ILogger>();
+
+            var builder = new WebHostBuilder()
+                            .UseEnvironment("Testing")
+                            .UseStartup<Startup>();
+
+            var server = new TestServer(builder);
+
+            var context = server.Host.Services.GetService(typeof(CatalogContext)) as CatalogContext;
+            
             _repository = new CatalogRepository(context, logger.Object);
+            
+            _catalogBrands = TestCatalog.CreateBrands();
+            _catalogTypes = TestCatalog.CreateTypes();
+            _catalogResponse = TestCatalog.CreateItems();
+            
+            context.AddRange(_catalogBrands);
+            context.AddRange(_catalogTypes);
+            context.AddRange(_catalogResponse.ItemsOnPage);
+            context.SaveChanges();
             
         }
 
@@ -138,7 +154,7 @@ namespace eShop.Catalog.Tests
         {
             //Arrange
             const int id = 1;
-        private static DbContextOptions<CatalogContext> GetInMemoryContextOptions()
+
             //Act
             var result = await _repository.GetItemAsync(id);
 
@@ -150,27 +166,11 @@ namespace eShop.Catalog.Tests
         [Fact]
         public async Task Get_item_by_id_should_return_item_if_id_doesnt_exist()
         {
-            var logger = new Mock<ILogger>();
             const int id = 111;
-            var builder = new DbContextOptionsBuilder<CatalogContext>();
+
             //Act
-            builder.UseInMemoryDatabase("TestingDB");
-                .UseStartup<Startup>();
+            var result = await _repository.GetItemAsync(id);
 
-            var server = new TestServer(builder);
-
-            context = server.Host.Services.GetService(typeof(CatalogContext)) as CatalogContext;
-
-
-            var catalogBrands = TestCatalog.CreateBrands();
-            var catalogTypes = TestCatalog.CreateTypes();
-            var catalogResponse = TestCatalog.CreateItems();
-
-            context.AddRange(catalogBrands);
-            context.AddRange(catalogTypes);
-            context.AddRange(catalogResponse.ItemsOnPage);
-            context.SaveChanges();
-            return builder.Options;
             //Assert
             Assert.Null(result);
         }
@@ -193,14 +193,6 @@ namespace eShop.Catalog.Tests
                 Price = 100.00M,
                 RestockThreshold = 10
             };
-            using (_transaction)
-            {
-                //Act
-                var result = await _repository.AddItemAsync(item);
-
-                //Assert
-                Assert.True(result);
-            }
         }
     }
 }
