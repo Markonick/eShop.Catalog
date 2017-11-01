@@ -15,28 +15,12 @@ namespace eShop.Catalog.Tests
     public class CatalogRepositoryTests
     {
         private readonly ICatalogRepository _repository;
+        private Mock<ILogger> _logger;
 
         public CatalogRepositoryTests()
         {
-            var logger = new Mock<ILogger>();
-            var builder = new WebHostBuilder()
-                .UseEnvironment("Testing")
-                .UseStartup<Startup>();
-
-            var server = new TestServer(builder);
-
-            var context = server.Host.Services.GetService(typeof(CatalogContext)) as CatalogContext;
-            
-            _repository = new CatalogRepository(context, logger.Object);
-
-            var catalogBrands = TestCatalog.CreateBrands();
-            var catalogTypes = TestCatalog.CreateTypes();
-            var catalogResponse = TestCatalog.CreateItems();
-
-            context.AddRange(catalogBrands);
-            context.AddRange(catalogTypes);
-            context.AddRange(catalogResponse.ItemsOnPage);
-            context.SaveChanges();
+            _logger = SetupRepositoryTests(out var context);
+            _repository = new CatalogRepository(context, _logger.Object);
         }
 
         [Fact]
@@ -122,11 +106,27 @@ namespace eShop.Catalog.Tests
             Assert.Equal(result.Count, expectedNumberOfItems);
         }
 
-        private static DbContextOptions<CatalogContext> GetInMemoryContextOptions()
+        private static Mock<ILogger> SetupRepositoryTests(out CatalogContext context)
         {
-            var builder = new DbContextOptionsBuilder<CatalogContext>();
-            builder.UseInMemoryDatabase("TestingDB");
-            return builder.Options;
+            var logger = new Mock<ILogger>();
+            var builder = new WebHostBuilder()
+                .UseEnvironment("Testing")
+                .UseStartup<Startup>();
+
+            var server = new TestServer(builder);
+
+            context = server.Host.Services.GetService(typeof(CatalogContext)) as CatalogContext;
+
+
+            var catalogBrands = TestCatalog.CreateBrands();
+            var catalogTypes = TestCatalog.CreateTypes();
+            var catalogResponse = TestCatalog.CreateItems();
+
+            context.AddRange(catalogBrands);
+            context.AddRange(catalogTypes);
+            context.AddRange(catalogResponse.ItemsOnPage);
+            context.SaveChanges();
+            return logger;
         }
     }
 }
