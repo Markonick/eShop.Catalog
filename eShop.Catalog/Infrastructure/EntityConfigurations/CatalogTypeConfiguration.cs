@@ -2,9 +2,9 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
-namespace eShop.Catalog.Infrastructure
+namespace eShop.Catalog.Infrastructure.EntityConfigurations
 {
-    public class CatalogTypeMap : IEntityTypeConfiguration<CatalogType>
+    public class CatalogTypeConfiguration : IEntityTypeConfiguration<CatalogType>
     {
         public void Configure(EntityTypeBuilder<CatalogType> builder)
         {

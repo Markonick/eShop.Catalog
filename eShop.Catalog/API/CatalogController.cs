@@ -89,8 +89,8 @@ namespace eShop.Catalog.API
             return Ok(types);
         }
 
-        // POST api/v1/[controller]/add
-        [HttpPost("add")]
+        // POST api/v1/[controller]/items
+        [HttpPost("items")]
         [ProducesResponseType((int)HttpStatusCode.Created)]
         public async Task<IActionResult> CreateProduct([FromBody]CatalogItem product)
         {
@@ -107,8 +107,8 @@ namespace eShop.Catalog.API
             }
         }
 
-        // DELETE api/v1/[controller]/delete/id
-        [HttpDelete("delete/{id}")]
+        // DELETE api/v1/[controller]/id
+        [HttpDelete("{id}")]
         [ProducesResponseType((int)HttpStatusCode.NoContent)]
         public async Task<IActionResult> DeleteProduct(int id)
         {
@@ -117,8 +117,8 @@ namespace eShop.Catalog.API
             return NoContent();
         }
 
-        // PUT api/v1/[controller]/update
-        [HttpPut("update")]
+        // PUT api/v1/[controller]/items
+        [HttpPut("items")]
         [ProducesResponseType((int)HttpStatusCode.Created)]
         [ProducesResponseType((int)HttpStatusCode.NotFound)]
         public async Task<IActionResult> UpdateProduct([FromBody]CatalogItem product)

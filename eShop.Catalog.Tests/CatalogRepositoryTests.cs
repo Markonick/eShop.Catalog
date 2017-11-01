@@ -1,11 +1,13 @@
-﻿using System.Linq;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using eShop.Catalog.Domain;
 using eShop.Catalog.Infrastructure;
 using eShop.Catalog.Tests.Helpers;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.TestHost;
-using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Storage;
 using Moq;
 using Serilog;
 using Xunit;
@@ -15,12 +17,17 @@ namespace eShop.Catalog.Tests
     public class CatalogRepositoryTests
     {
         private readonly ICatalogRepository _repository;
-        private Mock<ILogger> _logger;
+        private readonly IEnumerable<CatalogType> _catalogTypes;
+        private readonly CatalogResponse _catalogResponse;
+        private readonly CatalogContext _context;
+        private IDbContextTransaction _transaction;
 
         public CatalogRepositoryTests()
         {
             _logger = SetupRepositoryTests(out var context);
-            _repository = new CatalogRepository(context, _logger.Object);
+           
+            _repository = new CatalogRepository(context, logger.Object);
+            
         }
 
         [Fact]
@@ -48,8 +55,8 @@ namespace eShop.Catalog.Tests
 
             //Assert
             Assert.Equal(result.ItemsOnPage.Count, expectedNumberOfItems);
-            Assert.Same(result.ItemsOnPage.ElementAt(0).Name, "Gucci Dionysus Small suede and leather shoulder bag");
-            Assert.Same(result.ItemsOnPage.ElementAt(1).Name, "Dolce & Gabbana Cotton-blend jacquard blouse");
+            Assert.Same(result.ItemsOnPage.ElementAt(0).Name, "Dolce & Gabbana Cotton-blend jacquard blouse");
+            Assert.Same(result.ItemsOnPage.ElementAt(1).Name, "Gucci Dionysus Small suede and leather shoulder bag");
         }
 
         [Fact]
@@ -81,36 +88,73 @@ namespace eShop.Catalog.Tests
         }
 
         [Fact]
+        public async Task Get_Items_Should_Return_Catalog_When_Given_Null_Ids()
+        {
+            //Arrange
+            const int expectedNumberOfItems = 14;
+
+            //Act
+            var result = await _repository.GetItemsAsync(null, null, 0, 14);
+
+            //Assert
+            Assert.Equal(result.ItemsOnPage.Count, expectedNumberOfItems);
+        }
+
+        [Fact]
+        public async Task Get_Items_Should_Throw_Exception_when_context_disposed()
+        {
+            //Arrange
+            //Act
+            _context.Dispose();
+
+            //Assert
+            await Assert.ThrowsAsync<ObjectDisposedException>(() => _repository.GetItemsAsync(null, null, 0, 14));
+        }
+
+        [Fact]
         public async Task Get_Brands()
         {
             //Arrange
-            const int expectedNumberOfItems = 1;
-
             //Act
             var result = await _repository.GetCatalogBrandsAsync();
 
             //Assert
-            Assert.Equal(result.Count, expectedNumberOfItems);
+            Assert.Equal(result.Count, _catalogBrands.Count());
         }
 
         [Fact]
         public async Task Get_Types()
         {
             //Arrange
-            const int expectedNumberOfItems = 1;
-
             //Act
             var result = await _repository.GetCatalogTypesAsync();
 
             //Assert
-            Assert.Equal(result.Count, expectedNumberOfItems);
+            Assert.Equal(result.Count, _catalogTypes.Count());
         }
 
-        private static Mock<ILogger> SetupRepositoryTests(out CatalogContext context)
+        [Fact]
+        public async Task Get_item_by_id_should_return_item_if_id_exists()
+        {
+            //Arrange
+            const int id = 1;
+        private static DbContextOptions<CatalogContext> GetInMemoryContextOptions()
+            //Act
+            var result = await _repository.GetItemAsync(id);
+
+            //Assert
+            Assert.NotNull(result);
+            Assert.Same(result.Name, "Gucci Dionysus Small suede and leather shoulder bag");
+        }
+
+        [Fact]
+        public async Task Get_item_by_id_should_return_item_if_id_doesnt_exist()
         {
             var logger = new Mock<ILogger>();
-            var builder = new WebHostBuilder()
-                .UseEnvironment("Testing")
+            const int id = 111;
+            var builder = new DbContextOptionsBuilder<CatalogContext>();
+            //Act
+            builder.UseInMemoryDatabase("TestingDB");
                 .UseStartup<Startup>();
 
             var server = new TestServer(builder);
@@ -126,7 +170,37 @@ namespace eShop.Catalog.Tests
             context.AddRange(catalogTypes);
             context.AddRange(catalogResponse.ItemsOnPage);
             context.SaveChanges();
-            return logger;
+            return builder.Options;
+            //Assert
+            Assert.Null(result);
+        }
+
+        [Fact]
+        public async Task Add_item_to_catalog_should_return_true()
+        {
+            //Arrange
+            var item = new CatalogItem
+            {
+                CatalogBrandId =1,
+                CatalogTypeId = 1,
+                AvailableStock = 1,
+                DateTimeAdded = DateTime.Now,
+                DateTimeModified = DateTime.Now,
+                Description = "blabla",
+                Name = "somename",
+                OnReorder = false,
+                PictureFilename = "picture.png",
+                Price = 100.00M,
+                RestockThreshold = 10
+            };
+            using (_transaction)
+            {
+                //Act
+                var result = await _repository.AddItemAsync(item);
+
+                //Assert
+                Assert.True(result);
+            }
         }
     }
 }
