@@ -252,7 +252,7 @@ namespace eShop.Catalog.UnitTests
             var addedItem = await _repository.AddItemAsync(item);
 
             var updatedItem = addedItem;
-            updatedItem.Id = 6666;
+            updatedItem.Id = 0;
 
             //Act
             var result = await _repository.UpdateItemAsync(updatedItem);
