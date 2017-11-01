@@ -141,7 +141,7 @@ namespace eShop.Catalog.Infrastructure
             }
         }
 
-        public async Task<bool> AddItemAsync(CatalogItem product)
+        public async Task<CatalogItem> AddItemAsync(CatalogItem product)
         {
             try
             {
@@ -164,7 +164,7 @@ namespace eShop.Catalog.Infrastructure
 
                 await _dbContext.SaveChangesAsync();
                 
-                return true;
+                return _dbContext.CatalogItems.Last();
             }
             catch (Exception ex)
             {
@@ -173,19 +173,19 @@ namespace eShop.Catalog.Infrastructure
             }
         }
 
-        public async Task<bool> DeleteItemAsync(int id)
+        public async Task<CatalogItem> DeleteItemAsync(int id)
         {
             try
             {
                 var deleteProduct = await _dbContext.CatalogItems.FindAsync(id);
 
-                if (deleteProduct == null) return false;
+                if (deleteProduct == null) return null;
 
                 _dbContext.CatalogItems.Remove(deleteProduct);
 
                 await _dbContext.SaveChangesAsync();
 
-                return true;
+                return deleteProduct;
             }
             catch (Exception ex)
             {
@@ -194,13 +194,13 @@ namespace eShop.Catalog.Infrastructure
             }
         }
 
-        public async Task<bool> UpdateItemAsync(CatalogItem product)
+        public async Task<CatalogItem> UpdateItemAsync(CatalogItem product)
         {
             try
             {
                 var updateProduct = await _dbContext.CatalogItems.FindAsync(product.Id);
 
-                if (updateProduct == null) return false;
+                if (updateProduct == null) return null;
 
                 updateProduct.CatalogBrandId = product.CatalogBrandId;
                 updateProduct.CatalogTypeId = product.CatalogTypeId;
@@ -220,7 +220,7 @@ namespace eShop.Catalog.Infrastructure
 
                 //dbContextTransaction.Commit(); TODO: Will need some kind of eventual consistency here to update price
 
-                return true;
+                return updateProduct;
             }
             catch (Exception ex)
             {

@@ -96,7 +96,7 @@ namespace eShop.Catalog.API
         {
             try
             {
-                if (await _repository.AddItemAsync(product) != true) return BadRequest();
+                if (await _repository.AddItemAsync(product) == null) return BadRequest();
                 
                 return CreatedAtAction(nameof(GetById), new {id = product.Id}, null);
             }
@@ -112,7 +112,7 @@ namespace eShop.Catalog.API
         [ProducesResponseType((int)HttpStatusCode.NoContent)]
         public async Task<IActionResult> DeleteProduct(int id)
         {
-            if (await _repository.DeleteItemAsync(id) == false) return NotFound();
+            if (await _repository.DeleteItemAsync(id) == null) return NotFound();
 
             return NoContent();
         }
@@ -124,7 +124,7 @@ namespace eShop.Catalog.API
         public async Task<IActionResult> UpdateProduct([FromBody]CatalogItem product)
         {
 
-            if (await _repository.UpdateItemAsync(product) != true) return NotFound();
+            if (await _repository.UpdateItemAsync(product) == null) return NotFound();
 
             return CreatedAtAction(nameof(GetById), new {id = product.Id}, null);
         }

@@ -9,9 +9,9 @@ namespace eShop.Catalog.Domain
         Task<CatalogResponse> GetItemsAsync(string name, int pageIndex, int pageSize);
         Task<CatalogResponse> GetItemsAsync(int? catalogTypeId, int? catalogBrandId, int pageIndex, int pageSize);
         Task<CatalogItem> GetItemAsync(int id);
-        Task<bool> AddItemAsync(CatalogItem product);
-        Task<bool> DeleteItemAsync(int id);
-        Task<bool> UpdateItemAsync(CatalogItem product);
+        Task<CatalogItem> AddItemAsync(CatalogItem product);
+        Task<CatalogItem> DeleteItemAsync(int id);
+        Task<CatalogItem> UpdateItemAsync(CatalogItem product);
         Task<List<CatalogBrand>> GetCatalogBrandsAsync();
         Task<List<CatalogType>> GetCatalogTypesAsync();
     }

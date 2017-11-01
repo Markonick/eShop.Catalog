@@ -22,6 +22,7 @@ namespace eShop.Catalog.UnitTests
         {
             _logger = new Mock<ILogger>();
             _repository = new Mock<ICatalogRepository>();
+            _controller = new CatalogController(_repository.Object, _logger.Object);
         }
 
         [Fact]
@@ -32,8 +33,7 @@ namespace eShop.Catalog.UnitTests
             _repository.Setup(x => x.GetItemsAsync(0, 10)).Returns(Task.FromResult(items));
 
             //Act
-            var controller = new CatalogController(_repository.Object, _logger.Object);
-            var actionResult = await controller.Items(10, 0) as ObjectResult;
+            var actionResult = await _controller.Items(10, 0) as ObjectResult;
 
             //Assert
             Assert.NotNull(actionResult);
@@ -49,8 +49,7 @@ namespace eShop.Catalog.UnitTests
             _repository.Setup(x => x.GetItemsAsync(name, 0, 10)).Returns(Task.FromResult(items));
 
             //Act
-            var controller = new CatalogController(_repository.Object, _logger.Object);
-            var actionResult = await controller.Items(name, 10, 0) as ObjectResult;
+            var actionResult = await _controller.Items(name, 10, 0) as ObjectResult;
             
             //Assert
             Assert.NotNull(actionResult);
@@ -65,8 +64,7 @@ namespace eShop.Catalog.UnitTests
             _repository.Setup(x => x.GetItemsAsync(1, 1, 0, 10)).Returns(Task.FromResult(items));
 
             //Act
-            var controller = new CatalogController(_repository.Object, _logger.Object);
-            var actionResult = await controller.Items(1, 1, 10, 0) as ObjectResult;
+            var actionResult = await _controller.Items(1, 1, 10, 0) as ObjectResult;
 
             //Assert
             Assert.NotNull(actionResult);
@@ -82,8 +80,7 @@ namespace eShop.Catalog.UnitTests
             _repository.Setup(x => x.GetItemAsync(id)).Returns(Task.FromResult(item));
 
             //Act
-            var controller = new CatalogController(_repository.Object, _logger.Object);
-            var actionResult = await controller.GetById(id) as ObjectResult;
+            var actionResult = await _controller.GetById(id) as ObjectResult;
 
             //Assert
             Assert.NotNull(actionResult);
@@ -97,8 +94,7 @@ namespace eShop.Catalog.UnitTests
             _repository.Setup(x => x.GetItemAsync(1)).Returns(Task.FromResult((CatalogItem) null));
 
             //Act
-            var controller = new CatalogController(_repository.Object, _logger.Object);
-            var actionResult = await controller.GetById(1) as NotFoundResult;
+            var actionResult = await _controller.GetById(1) as NotFoundResult;
 
             //Assert
             Assert.NotNull(actionResult);
@@ -114,8 +110,7 @@ namespace eShop.Catalog.UnitTests
             _repository.Setup(x => x.GetItemAsync(id)).Returns(Task.FromResult(item));
 
             //Act
-            var controller = new CatalogController(_repository.Object, _logger.Object);
-            var actionResult = await controller.GetById(0) as BadRequestResult;
+            var actionResult = await _controller.GetById(0) as BadRequestResult;
 
             //Assert
             Assert.NotNull(actionResult);
@@ -129,8 +124,7 @@ namespace eShop.Catalog.UnitTests
             _repository.Setup(x => x.GetCatalogTypesAsync()).Returns(Task.FromResult(new List<CatalogType>()));
 
             //Act
-            var controller = new CatalogController(_repository.Object, _logger.Object);
-            var actionResult = await controller.CatalogTypes() as ObjectResult;
+            var actionResult = await _controller.CatalogTypes() as ObjectResult;
 
             //Assert
             Assert.NotNull(actionResult);
@@ -146,8 +140,7 @@ namespace eShop.Catalog.UnitTests
             _repository.Setup(x => x.GetCatalogBrandsAsync()).Returns(Task.FromResult(new List<CatalogBrand>()));
 
             //Act
-            var controller = new CatalogController(_repository.Object, _logger.Object);
-            var actionResult = await controller.CatalogBrands() as ObjectResult;
+            var actionResult = await _controller.CatalogBrands() as ObjectResult;
 
             //Assert
             Assert.NotNull(actionResult);
@@ -159,11 +152,10 @@ namespace eShop.Catalog.UnitTests
         {
             //Arrange
             var item = new CatalogItem { AvailableStock = 1, Name = "name" };
-            _repository.Setup(x => x.AddItemAsync(item)).Returns(Task.FromResult(true));
+            _repository.Setup(x => x.AddItemAsync(item)).Returns(Task.FromResult(item));
 
             //Act
-            var controller = new CatalogController(_repository.Object, _logger.Object);
-            var actionResult = await controller.CreateProduct(item) as ObjectResult;
+            var actionResult = await _controller.CreateProduct(item) as ObjectResult;
 
             //Assert
             Assert.NotNull(actionResult);
@@ -174,11 +166,10 @@ namespace eShop.Catalog.UnitTests
         public async Task Create_Product_Should_Return_BadRequest_with_invalid_product()
         {
             //Arrange
-            _repository.Setup(x => x.AddItemAsync(null)).Returns(Task.FromResult(false));
+            _repository.Setup(x => x.AddItemAsync(null)).Returns(Task.FromResult((CatalogItem)null));
 
             //Act
-            var controller = new CatalogController(_repository.Object, _logger.Object);
-            var actionResult = await controller.CreateProduct(null) as BadRequestResult;
+            var actionResult = await _controller.CreateProduct(null) as BadRequestResult;
 
             //Assert
             Assert.NotNull(actionResult);
@@ -190,11 +181,10 @@ namespace eShop.Catalog.UnitTests
         {
             //Arrange
             var item = new CatalogItem { Id = 1, AvailableStock = 1, Name = "name" };
-            _repository.Setup(x => x.DeleteItemAsync(item.Id)).Returns(Task.FromResult(true));
+            _repository.Setup(x => x.DeleteItemAsync(item.Id)).Returns(Task.FromResult(item));
 
             //Act
-            var controller = new CatalogController(_repository.Object, _logger.Object);
-            var actionResult = await controller.DeleteProduct(item.Id) as NoContentResult;
+            var actionResult = await _controller.DeleteProduct(item.Id) as NoContentResult;
 
             //Assert
             Assert.NotNull(actionResult);
@@ -206,11 +196,10 @@ namespace eShop.Catalog.UnitTests
         {
             //Arrange
             var item = new CatalogItem { Id = 1, AvailableStock = 1, Name = "name" };
-            _repository.Setup(x => x.DeleteItemAsync(item.Id)).Returns(Task.FromResult(false));
+            _repository.Setup(x => x.DeleteItemAsync(item.Id)).Returns(Task.FromResult((CatalogItem)null));
 
             //Act
-            var controller = new CatalogController(_repository.Object, _logger.Object);
-            var actionResult = await controller.DeleteProduct(item.Id) as NotFoundResult;
+            var actionResult = await _controller.DeleteProduct(item.Id) as NotFoundResult;
 
             //Assert
             Assert.NotNull(actionResult);
@@ -222,11 +211,10 @@ namespace eShop.Catalog.UnitTests
         {
             //Arrange
             var item = new CatalogItem { AvailableStock = 1, Name = "name" };
-            _repository.Setup(x => x.UpdateItemAsync(item)).Returns(Task.FromResult(true));
+            _repository.Setup(x => x.UpdateItemAsync(item)).Returns(Task.FromResult(item));
 
             //Act
-            var controller = new CatalogController(_repository.Object, _logger.Object);
-            var actionResult = await controller.UpdateProduct(item) as ObjectResult;
+            var actionResult = await _controller.UpdateProduct(item) as ObjectResult;
 
             //Assert
             Assert.NotNull(actionResult);
@@ -238,11 +226,10 @@ namespace eShop.Catalog.UnitTests
         {
             //Arrange
             var item = new CatalogItem { AvailableStock = 1, Name = "name" };
-            _repository.Setup(x => x.UpdateItemAsync(item)).Returns(Task.FromResult(false));
+            _repository.Setup(x => x.UpdateItemAsync(item)).Returns(Task.FromResult((CatalogItem)null));
 
             //Act
-            var controller = new CatalogController(_repository.Object, _logger.Object);
-            var actionResult = await controller.UpdateProduct(item) as NotFoundResult;
+            var actionResult = await _controller.UpdateProduct(item) as NotFoundResult;
 
             //Assert
             Assert.NotNull(actionResult);

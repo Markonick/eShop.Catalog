@@ -176,12 +176,97 @@ namespace eShop.Catalog.UnitTests
         }
 
         [Fact]
-        public async Task Add_item_to_catalog_should_return_true()
+        public async Task Add_item_to_catalog_should_return_added_item()
         {
             //Arrange
+            var item = CreateCatalogItem();
+
+            //Act
+            var result = await _repository.AddItemAsync(item);
+
+            //Assert
+            Assert.NotNull(result);
+            Assert.True(result.Id > 0, "The newly added Id is not larger than 0!");
+        }
+
+        [Fact]
+        public async Task Add_invalid_item_to_catalog_should_throw()
+        {
+            //Arrange
+            CatalogItem item = null;
+
+            //Act
+            //Assert
+            await Assert.ThrowsAnyAsync<Exception>(() => _repository.AddItemAsync(item));
+        }
+
+        [Fact]
+        public async Task Deleting_an_item_should_return_deleted_item()
+        {
+            //Arrange
+            var item = CreateCatalogItem();
+
+            //Act
+            var addedItem = await _repository.AddItemAsync(item);
+            var deletedItem = await _repository.DeleteItemAsync(addedItem.Id);
+
+            //Assert
+            Assert.NotNull(deletedItem);
+            Assert.True(deletedItem.Id > 0, "The newly added Id is not larger than 0!");
+        }
+
+        [Fact]
+        public async Task Deleting_a_non_existing_item_should_return_null()
+        {
+            //Arrange
+            //Act
+            var deletedItem = await _repository.DeleteItemAsync(1111);
+
+            //Assert
+            Assert.Null(deletedItem);
+        }
+
+        [Fact]
+        public async Task Updating_an_item_should_return_update_item()
+        {
+            //Arrange
+            var item = CreateCatalogItem();
+
+            //Act
+            var addedItem = await _repository.AddItemAsync(item);
+            var updatedItem = addedItem;
+            updatedItem.Price = 1000.00M;
+
+            var result = await _repository.UpdateItemAsync(updatedItem);
+
+            //Assert
+            Assert.NotNull(result);
+            Assert.True(result.Id > 0, "The newly added Id is not larger than 0!");
+        }
+
+        [Fact]
+        public async Task Updating_an_non_existing_item_should_return_null()
+        {
+            //Arrange
+            var item = CreateCatalogItem();
+            var addedItem = await _repository.AddItemAsync(item);
+
+            var updatedItem = addedItem;
+            updatedItem.Id = 6666;
+
+            //Act
+            var result = await _repository.UpdateItemAsync(updatedItem);
+
+            //Assert
+            Assert.Null(result);
+        }
+
+        private static CatalogItem CreateCatalogItem()
+        {
             var item = new CatalogItem
             {
-                CatalogBrandId =1,
+                Id = 666,
+                CatalogBrandId = 1,
                 CatalogTypeId = 1,
                 AvailableStock = 1,
                 DateTimeAdded = DateTime.Now,
@@ -193,6 +278,7 @@ namespace eShop.Catalog.UnitTests
                 Price = 100.00M,
                 RestockThreshold = 10
             };
+            return item;
         }
     }
 }
