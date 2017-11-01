@@ -4,14 +4,14 @@ using System.Linq;
 using System.Threading.Tasks;
 using eShop.Catalog.Domain;
 using eShop.Catalog.Infrastructure;
-using eShop.Catalog.Tests.Helpers;
+using eShop.Catalog.UnitTests.Helpers;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.TestHost;
 using Moq;
 using Serilog;
 using Xunit;
 
-namespace eShop.Catalog.Tests
+namespace eShop.Catalog.UnitTests
 {
     public class CatalogRepositoryTests
     {
@@ -31,18 +31,18 @@ namespace eShop.Catalog.Tests
 
             var server = new TestServer(builder);
 
-            var context = server.Host.Services.GetService(typeof(CatalogContext)) as CatalogContext;
+            _context = server.Host.Services.GetService(typeof(CatalogContext)) as CatalogContext;
             
-            _repository = new CatalogRepository(context, logger.Object);
+            _repository = new CatalogRepository(_context, logger.Object);
             
             _catalogBrands = TestCatalog.CreateBrands();
             _catalogTypes = TestCatalog.CreateTypes();
             _catalogResponse = TestCatalog.CreateItems();
             
-            context.AddRange(_catalogBrands);
-            context.AddRange(_catalogTypes);
-            context.AddRange(_catalogResponse.ItemsOnPage);
-            context.SaveChanges();
+            _context.AddRange(_catalogBrands);
+            _context.AddRange(_catalogTypes);
+            _context.AddRange(_catalogResponse.ItemsOnPage);
+            _context.SaveChanges();
             
         }
 

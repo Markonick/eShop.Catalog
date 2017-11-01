@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using eShop.Catalog.Domain;
 
-namespace eShop.Catalog.Tests.Helpers
+namespace eShop.Catalog.UnitTests.Helpers
 {
     public static class TestCatalog
     {

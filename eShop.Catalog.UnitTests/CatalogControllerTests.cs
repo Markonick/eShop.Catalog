@@ -3,13 +3,13 @@ using System.Net;
 using System.Threading.Tasks;
 using eShop.Catalog.API;
 using eShop.Catalog.Domain;
-using eShop.Catalog.Tests.Helpers;
+using eShop.Catalog.UnitTests.Helpers;
 using Microsoft.AspNetCore.Mvc;
 using Moq;
 using Serilog;
 using Xunit;
 
-namespace eShop.Catalog.Tests
+namespace eShop.Catalog.UnitTests
 {
 
     public class CatalogControllerTests
