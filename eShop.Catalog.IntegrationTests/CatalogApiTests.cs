@@ -34,7 +34,8 @@ namespace eShop.Catalog.IntegrationTests
         }
 
         [Theory]
-        [InlineData(3,1)]
+        [InlineData(3, 0)]
+        [InlineData(3, 1)]
         public async Task Client_should_be_able_to_get_list_of_items_per_page(int pageSize, int pageIndex)
         {
             using (var server = new TestServer(_builder))
@@ -46,7 +47,8 @@ namespace eShop.Catalog.IntegrationTests
                 var responseBody = await response.Content.ReadAsStringAsync();
                 var result = JsonConvert.DeserializeObject<PaginatedItemsViewModel<CatalogItem>>(responseBody);
 
-                Assert.Equal(3, result.Count);
+                Assert.Equal(pageSize, result.PageSize);
+                Assert.Equal(pageIndex, result.PageIndex);
             }
         }
     }
