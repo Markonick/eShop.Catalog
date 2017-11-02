@@ -11,7 +11,7 @@ using System;
 namespace eShop.Catalog.Migrations
 {
     [DbContext(typeof(CatalogContext))]
-    [Migration("20171031003241_eShop.Catalog.Infrastructure.CatalogContextSeed")]
+    [Migration("20171101195501_eShop.Catalog.Infrastructure.CatalogContextSeed")]
     partial class eShopCatalogInfrastructureCatalogContextSeed
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)

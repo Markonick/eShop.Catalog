@@ -7,9 +7,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "eShop.Catalog", "eShop.Cata
 EndProject
 Project("{E53339B2-1760-4266-BCC7-CA923CBCF16C}") = "docker-compose", "docker-compose.dcproj", "{5DD3CB98-30E7-4870-8F33-BB6D2F375C08}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "eShop.Catalog.IntegrationTests", "eShop.Catalog.IntegrationTests\eShop.Catalog.IntegrationTests.csproj", "{F57C3BBB-90FE-46B3-A806-FF6C5EA0C34B}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "eShop.Catalog.IntegrationTests", "eShop.Catalog.IntegrationTests\eShop.Catalog.IntegrationTests.csproj", "{F57C3BBB-90FE-46B3-A806-FF6C5EA0C34B}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "eShop.Catalog.UnitTests", "eShop.Catalog.UnitTests\eShop.Catalog.UnitTests.csproj", "{35726B2B-39F3-4B5D-A469-57E545F834DD}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "eShop.Catalog.UnitTests", "eShop.Catalog.UnitTests\eShop.Catalog.UnitTests.csproj", "{35726B2B-39F3-4B5D-A469-57E545F834DD}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

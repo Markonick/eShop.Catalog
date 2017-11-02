@@ -31,25 +31,22 @@ namespace eShop.Catalog.Infrastructure
             {
                 try
                 {
-                    using (context)
+                    if (!context.CatalogBrands.Any())
                     {
-                        if (!context.CatalogBrands.Any())
-                        {
-                            await context.CatalogBrands.AddRangeAsync(CatalogBrandsInit());
-                            await context.SaveChangesAsync();
-                        }
+                        await context.CatalogBrands.AddRangeAsync(CatalogBrandsInit());
+                        await context.SaveChangesAsync();
+                    }
 
-                        if (!context.CatalogTypes.Any())
-                        {
-                            await context.CatalogTypes.AddRangeAsync(CatalogTypesInit());
-                            await context.SaveChangesAsync();
-                        }
+                    if (!context.CatalogTypes.Any())
+                    {
+                        await context.CatalogTypes.AddRangeAsync(CatalogTypesInit());
+                        await context.SaveChangesAsync();
+                    }
 
-                        if (!context.CatalogItems.Any())
-                        {
-                            await context.CatalogItems.AddRangeAsync(CatalogItemsInit());
-                            await context.SaveChangesAsync();
-                        }
+                    if (!context.CatalogItems.Any())
+                    {
+                        await context.CatalogItems.AddRangeAsync(CatalogItemsInit());
+                        await context.SaveChangesAsync();
                     }
                 }
                 catch (Exception ex)
