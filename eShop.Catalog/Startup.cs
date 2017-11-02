@@ -29,16 +29,15 @@ namespace eShop.Catalog
         public IServiceProvider ConfigureServices(IServiceCollection services)
         {
             services.AddMvc();
-            if (Env.IsEnvironment("Testing"))
+            if (Env.IsEnvironment("UnitTesting"))
             {
-                services.AddDbContext<CatalogContext>(options => options.UseInMemoryDatabase("TestingDB"));
+                services.AddDbContext<CatalogContext>(options => options.UseInMemoryDatabase("UnitTestingDB"));
             }
             else
             {
                 services.AddDbContext<CatalogContext>(options =>
                 {
-                    var connectionString = Configuration["ConnectionString"];
-                    options.UseSqlServer(connectionString,
+                    options.UseSqlServer(Configuration["ConnectionString"],
                         sqlServerOptionsAction: sqlOptions =>
                         {
                             sqlOptions.MigrationsAssembly(typeof(Startup).GetTypeInfo().Assembly.GetName().Name);

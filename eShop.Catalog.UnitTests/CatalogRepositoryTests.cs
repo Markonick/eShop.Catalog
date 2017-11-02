@@ -26,7 +26,7 @@ namespace eShop.Catalog.UnitTests
             var logger = new Mock<ILogger>();
 
             var builder = new WebHostBuilder()
-                            .UseEnvironment("Testing")
+                            .UseEnvironment("UnitTesting")
                             .UseStartup<Startup>();
 
             var server = new TestServer(builder);
@@ -242,23 +242,6 @@ namespace eShop.Catalog.UnitTests
             //Assert
             Assert.NotNull(result);
             Assert.True(result.Id > 0, "The newly added Id is not larger than 0!");
-        }
-
-        [Fact]
-        public async Task Updating_an_non_existing_item_should_return_null()
-        {
-            //Arrange
-            var item = CreateCatalogItem();
-            var addedItem = await _repository.AddItemAsync(item);
-
-            var updatedItem = addedItem;
-            updatedItem.Id = 0;
-
-            //Act
-            var result = await _repository.UpdateItemAsync(updatedItem);
-
-            //Assert
-            Assert.Null(result);
         }
 
         private static CatalogItem CreateCatalogItem()
