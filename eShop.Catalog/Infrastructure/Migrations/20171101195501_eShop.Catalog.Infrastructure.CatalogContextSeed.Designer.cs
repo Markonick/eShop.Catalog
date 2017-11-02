@@ -8,7 +8,7 @@ using Microsoft.EntityFrameworkCore.Storage;
 using Microsoft.EntityFrameworkCore.Storage.Internal;
 using System;
 
-namespace eShop.Catalog.Migrations
+namespace eShop.Catalog.Infrastructure.Migrations
 {
     [DbContext(typeof(CatalogContext))]
     [Migration("20171101195501_eShop.Catalog.Infrastructure.CatalogContextSeed")]

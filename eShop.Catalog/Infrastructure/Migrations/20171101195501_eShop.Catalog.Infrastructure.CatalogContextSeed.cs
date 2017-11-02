@@ -2,7 +2,7 @@
 using System;
 using System.Collections.Generic;
 
-namespace eShop.Catalog.Migrations
+namespace eShop.Catalog.Infrastructure.Migrations
 {
     public partial class eShopCatalogInfrastructureCatalogContextSeed : Migration
     {

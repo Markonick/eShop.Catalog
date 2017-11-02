@@ -136,7 +136,6 @@ namespace eShop.Catalog.UnitTests
         {
             //Arrange
             var item = new CatalogItem { AvailableStock = 1, Name = "name" };
-            var id = 1;
             _repository.Setup(x => x.GetCatalogBrandsAsync()).Returns(Task.FromResult(new List<CatalogBrand>()));
 
             //Act
