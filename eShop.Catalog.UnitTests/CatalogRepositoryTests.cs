@@ -60,6 +60,19 @@ namespace eShop.Catalog.UnitTests
         }
 
         [Fact]
+        public async Task Get_Items_with_pagination_params_Should_Return_paginated_items()
+        {
+            //Arrange
+            const int expectedNumberOfItems = 5;
+
+            //Act
+            var result = await _repository.GetItemsAsync(2, 5);
+
+            //Assert
+            Assert.Equal(result.ItemsOnPage.Count, expectedNumberOfItems);
+        }
+
+        [Fact]
         public async Task Get_Items_Should_Return_Catalog_By_Name()
         {
             //Arrange

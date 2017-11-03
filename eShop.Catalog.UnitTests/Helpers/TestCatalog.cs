@@ -127,7 +127,95 @@ namespace eShop.Catalog.UnitTests.Helpers
 
                 new CatalogItem{ Name = "Balenciaga Low Top Logo Sneakers - White - IT 37", Description = new String('n', 50),
                     Price = 435.00M, PictureFilename = "Balenciaga_shoes_1.png", CatalogTypeId = 1,
-                    CatalogBrandId = 3, AvailableStock = 21, DateTimeAdded = DateTime.Now, DateTimeModified = DateTime.Now, RestockThreshold = 50, OnReorder = false }
+                    CatalogBrandId = 3, AvailableStock = 21, DateTimeAdded = DateTime.Now, DateTimeModified = DateTime.Now, RestockThreshold = 50, OnReorder = false },
+
+                new CatalogItem{ Name = "AllSaints Jeans", Description = new String('o', 50),
+                    Price = 135.00M, PictureFilename = "AllSaints_jeans_1.png", CatalogTypeId = 7,
+                    CatalogBrandId = 8, AvailableStock = 40, DateTimeAdded = DateTime.Now, DateTimeModified = DateTime.Now, RestockThreshold = 50, OnReorder = false },
+
+                new CatalogItem{ Name = "Vintage Levis Jeans", Description = new String('p', 50),
+                    Price = 80.00M, PictureFilename = "Vintage_jeans_1.png", CatalogTypeId = 7,
+                    CatalogBrandId = 32, AvailableStock = 10, DateTimeAdded = DateTime.Now, DateTimeModified = DateTime.Now, RestockThreshold = 50, OnReorder = false },
+
+                new CatalogItem{ Name = "J.Crew Top", Description = new String('q', 50),
+                    Price = 190.00M, PictureFilename = "Fendi_jeans_1.png", CatalogTypeId = 5,
+                    CatalogBrandId = 6, AvailableStock = 20, DateTimeAdded = DateTime.Now, DateTimeModified = DateTime.Now, RestockThreshold = 50, OnReorder = false },
+
+                new CatalogItem{ Name = "Valentino Bag", Description = new String('r', 50),
+                    Price = 780.00M, PictureFilename = "Valentino_bag_1.png", CatalogTypeId = 2,
+                    CatalogBrandId = 27, AvailableStock = 5, DateTimeAdded = DateTime.Now, DateTimeModified = DateTime.Now, RestockThreshold = 50, OnReorder = false },
+
+                new CatalogItem{ Name = "Diesel Top", Description = new String('w', 50),
+                    Price = 44.40M, PictureFilename = "Diesel_top_1.png", CatalogTypeId = 5,
+                    CatalogBrandId = 33, AvailableStock = 10, DateTimeAdded = DateTime.Now, DateTimeModified = DateTime.Now, RestockThreshold = 50, OnReorder = false },
+
+                new CatalogItem{ Name = "Fendi Jeans", Description = new String('t', 50),
+                    Price = 190.00M, PictureFilename = "Fendi_jeans_1.png", CatalogTypeId = 7,
+                    CatalogBrandId = 11, AvailableStock = 20, DateTimeAdded = DateTime.Now, DateTimeModified = DateTime.Now, RestockThreshold = 50, OnReorder = false },
+
+                new CatalogItem{ Name = "Roberto Cavalli Shoes", Description = new String('u', 50),
+                    Price = 540.00M, PictureFilename = "Robertocavalli shoes_1.png", CatalogTypeId = 1,
+                    CatalogBrandId = 25, AvailableStock = 20, DateTimeAdded = DateTime.Now, DateTimeModified = DateTime.Now, RestockThreshold = 50, OnReorder = false },
+
+                new CatalogItem{ Name = "Burberry Scarf", Description = new String('v', 50),
+                    Price = 60.00M, PictureFilename = "Burberry_scarf_1.png", CatalogTypeId = 3,
+                    CatalogBrandId = 12, AvailableStock = 12, DateTimeAdded = DateTime.Now, DateTimeModified = DateTime.Now, RestockThreshold = 50, OnReorder = false },
+
+                new CatalogItem{ Name = "Vercace Dress", Description = new String('w', 50),
+                    Price = 369.00M, PictureFilename = "Vercace_dress_1.png", CatalogTypeId = 6,
+                    CatalogBrandId = 19, AvailableStock = 20, DateTimeAdded = DateTime.Now, DateTimeModified = DateTime.Now, RestockThreshold = 50, OnReorder = false },
+
+                new CatalogItem{ Name = "Fendi Shoes", Description = new String('x', 50),
+                    Price = 190.00M, PictureFilename = "Fendi_shoes_1.png", CatalogTypeId = 1,
+                    CatalogBrandId = 11, AvailableStock = 2, DateTimeAdded = DateTime.Now, DateTimeModified = DateTime.Now, RestockThreshold = 50, OnReorder = false },
+
+                new CatalogItem{ Name = "Fendi Jeans", Description = new String('y', 42),
+                    Price = 190.00M, PictureFilename = "Fendi_jeans_1.png", CatalogTypeId = 7,
+                    CatalogBrandId = 11, AvailableStock = 20, DateTimeAdded = DateTime.Now, DateTimeModified = DateTime.Now, RestockThreshold = 50, OnReorder = false },
+
+                new CatalogItem{ Name = "Fendi Jeans", Description = new String('z', 34),
+                    Price = 190.00M, PictureFilename = "Fendi_jeans_1.png", CatalogTypeId = 7,
+                    CatalogBrandId = 11, AvailableStock = 20, DateTimeAdded = DateTime.Now, DateTimeModified = DateTime.Now, RestockThreshold = 50, OnReorder = false },
+
+                new CatalogItem{ Name = "Fendi Jeans", Description = new String('i', 25),
+                    Price = 190.00M, PictureFilename = "Fendi_jeans_1.png", CatalogTypeId = 7,
+                    CatalogBrandId = 11, AvailableStock = 20, DateTimeAdded = DateTime.Now, DateTimeModified = DateTime.Now, RestockThreshold = 50, OnReorder = false },
+
+                new CatalogItem{ Name = "Vintage Jeans", Description = new String('e', 10),
+                    Price = 190.00M, PictureFilename = "Vintage_jeans_2.png", CatalogTypeId = 4,
+                    CatalogBrandId = 4, AvailableStock = 20, DateTimeAdded = DateTime.Now, DateTimeModified = DateTime.Now, RestockThreshold = 50, OnReorder = false },
+
+                new CatalogItem{ Name = "Fendi Jeans", Description = new String('c', 70),
+                    Price = 190.00M, PictureFilename = "Fendi_jeans_1.png", CatalogTypeId = 7,
+                    CatalogBrandId = 11, AvailableStock = 20, DateTimeAdded = DateTime.Now, DateTimeModified = DateTime.Now, RestockThreshold = 50, OnReorder = false },
+
+                new CatalogItem{ Name = "Jimmy Choo Shoes", Description = new String('s', 40),
+                    Price = 190.00M, PictureFilename = "Jimmy_choo_shoes_1.png", CatalogTypeId = 1,
+                    CatalogBrandId = 29, AvailableStock = 20, DateTimeAdded = DateTime.Now, DateTimeModified = DateTime.Now, RestockThreshold = 50, OnReorder = false },
+
+                new CatalogItem{ Name = "Fendi Bag", Description = new String('f', 30),
+                    Price = 190.00M, PictureFilename = "Fendi_bag_1.png", CatalogTypeId = 2,
+                    CatalogBrandId = 11, AvailableStock = 20, DateTimeAdded = DateTime.Now, DateTimeModified = DateTime.Now, RestockThreshold = 50, OnReorder = false },
+
+                new CatalogItem{ Name = "Diesel T-Shirt", Description = new String('a', 20),
+                    Price = 190.00M, PictureFilename = "Fendi_jeans_1.png", CatalogTypeId = 9,
+                    CatalogBrandId = 33, AvailableStock = 20, DateTimeAdded = DateTime.Now, DateTimeModified = DateTime.Now, RestockThreshold = 50, OnReorder = false },
+
+                new CatalogItem{ Name = "Vintage Jeans", Description = new String('w', 50),
+                    Price = 190.00M, PictureFilename = "Vintage_jeans_1.png", CatalogTypeId = 7,
+                    CatalogBrandId = 11, AvailableStock = 20, DateTimeAdded = DateTime.Now, DateTimeModified = DateTime.Now, RestockThreshold = 50, OnReorder = false },
+
+                new CatalogItem{ Name = "Fendi Top", Description = new String('x', 50),
+                    Price = 190.00M, PictureFilename = "Fendi_top_1.png", CatalogTypeId = 5,
+                    CatalogBrandId = 11, AvailableStock = 20, DateTimeAdded = DateTime.Now, DateTimeModified = DateTime.Now, RestockThreshold = 50, OnReorder = false },
+
+                new CatalogItem{ Name = "Fendi Jeans", Description = new String('v', 50),
+                    Price = 190.00M, PictureFilename = "Fendi_jeans_1.png", CatalogTypeId = 7,
+                    CatalogBrandId = 11, AvailableStock = 20, DateTimeAdded = DateTime.Now, DateTimeModified = DateTime.Now, RestockThreshold = 50, OnReorder = false },
+
+                new CatalogItem{ Name = "Champion Top", Description = new String('p', 50),
+                    Price = 52.90M, PictureFilename = "Champion_top_1.png", CatalogTypeId = 5,
+                    CatalogBrandId = 35, AvailableStock = 20, DateTimeAdded = DateTime.Now, DateTimeModified = DateTime.Now, RestockThreshold = 50, OnReorder = false },
             };
 
             return new CatalogResponse {ItemsOnPage = items.ToList(), TotalItems = items.ToList().Count };
