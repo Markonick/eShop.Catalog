@@ -9,6 +9,7 @@ using System.Threading.Tasks;
 using eShop.Catalog.Domain;
 using Microsoft.AspNetCore;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.TestHost;
 using Newtonsoft.Json;
 using Xunit;
@@ -155,8 +156,10 @@ namespace eShop.Catalog.IntegrationTests
 
                 var content = new StringContent(JsonConvert.SerializeObject(item), Encoding.UTF8, "application/json");
                 var response = await server.CreateClient().PostAsync(uri, content);
+                int.TryParse(response.Headers.Location.Segments[5], out int id);
 
                 Assert.Equal(HttpStatusCode.Created, response.StatusCode);
+                Assert.True(id > 0);
             }
         }
 
@@ -184,11 +187,12 @@ namespace eShop.Catalog.IntegrationTests
 
                 var content = new StringContent(JsonConvert.SerializeObject(item), Encoding.UTF8, "application/json");
                 var response = await server.CreateClient().PostAsync(uri, content);
-                
-                var responseBody = await response.Content.ReadAsStringAsync();
-                var result = JsonConvert.DeserializeObject<PaginatedItemsViewModel<CatalogItem>>(responseBody);
-                var updatedItem = result.Data.First();
 
+                int.TryParse(response.Headers.Location.Segments[5], out int id);
+
+
+                var updatedItem = item;
+                updatedItem.Id = id;
                 updatedItem.Price = 1111.00M;
 
                 content = new StringContent(JsonConvert.SerializeObject(updatedItem), Encoding.UTF8, "application/json");
@@ -202,6 +206,7 @@ namespace eShop.Catalog.IntegrationTests
         {
             var item = new CatalogItem
             {
+                Id = 121212,
                 CatalogBrandId = 1,
                 CatalogTypeId = 1,
                 AvailableStock = 1,

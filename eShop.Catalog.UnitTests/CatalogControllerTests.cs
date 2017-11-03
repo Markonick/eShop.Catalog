@@ -147,7 +147,7 @@ namespace eShop.Catalog.UnitTests
         }
 
         [Fact]
-        public async Task Create_Product_Should_Return_Created()
+        public async Task Create_Product_Should_Return_Created_and_return_id()
         {
             //Arrange
             var item = new CatalogItem { Id = 666, AvailableStock = 1, Name = "name" };
