@@ -150,7 +150,7 @@ namespace eShop.Catalog.UnitTests
         public async Task Create_Product_Should_Return_Created()
         {
             //Arrange
-            var item = new CatalogItem { AvailableStock = 1, Name = "name" };
+            var item = new CatalogItem { Id = 666, AvailableStock = 1, Name = "name" };
             _repository.Setup(x => x.AddItemAsync(item)).Returns(Task.FromResult(item));
 
             //Act

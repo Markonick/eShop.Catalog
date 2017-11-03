@@ -44,7 +44,7 @@ namespace eShop.Catalog.API
             return Ok(model);
         }
 
-        // GET api/v1/[controller]/items/withname/samplename[?pageSize=3&pageIndex=10]
+        // GET api/v1/[controller]/items/type/1/brand/null[?pageSize=3&pageIndex=10]
         [HttpGet("[action]/type/{catalogTypeId}/brand/{catalogBrandId}")]
         [ProducesResponseType(typeof(PaginatedItemsViewModel<CatalogItem>), (int)HttpStatusCode.OK)]
         public async Task<IActionResult> Items(int? catalogTypeId, int? catalogBrandId, [FromQuery]int pageSize = 10, [FromQuery]int pageIndex = 0)
@@ -96,9 +96,10 @@ namespace eShop.Catalog.API
         {
             try
             {
-                if (await _repository.AddItemAsync(product) == null) return BadRequest();
+                var result = await _repository.AddItemAsync(product);
+                if (result == null) return BadRequest();
                 
-                return CreatedAtAction(nameof(GetById), new {id = product.Id}, null);
+                return CreatedAtAction(nameof(GetById), new {id = result.Id}, null);
             }
             catch(Exception ex)
             {
