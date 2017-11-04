@@ -213,7 +213,6 @@ namespace eShop.Catalog.Infrastructure
                 updateProduct.Price = product.Price;
                 updateProduct.RestockThreshold = product.RestockThreshold;
                 
-                
                 _dbContext.CatalogItems.Update(updateProduct);
 
                 await _dbContext.SaveChangesAsync();

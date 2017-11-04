@@ -21,7 +21,7 @@ namespace eShop.Catalog.Infrastructure
             
             var retryPolicy = Policy.Handle<SqlException>().WaitAndRetryAsync(
                 retryCount: 3,
-                sleepDurationProvider: attempt => TimeSpan.FromSeconds(10),
+                sleepDurationProvider: retry => TimeSpan.FromSeconds(10),
                 onRetry: (exception, timeSpan, retry, ctx) =>
                 {
                     logger.Debug($"[{name}] Exception {exception.GetType().Name} with message ${exception.Message} detected on attempt {retry} of {3}");
