@@ -78,7 +78,6 @@ namespace eShop.Catalog
             var sleepDurationInSeconds = policy.GetValue<int>("SleepDurationInSeconds");
 
             services.AddSingleton<ICatalogRepository, CatalogRepository>();
-
             services.AddSingleton(_ => Configuration);
             return services.BuildServiceProvider();
         }
